@@ -763,7 +763,7 @@ module.exports = function(Chart) {
 		/**
 		 * Handle an event
 		 * @private
-		 * @param {IEvent} event - The event to handle
+		 * @param e {Event} the event to handle
 		 * @returns {Boolean} true if the tooltip changed
 		 */
 		handleEvent: function(e) {
@@ -785,10 +785,7 @@ module.exports = function(Chart) {
 			me._lastActive = me._active;
 
 			if (options.enabled || options.custom) {
-				me._eventPosition = {
-					x: e.x,
-					y: e.y
-				};
+				me._eventPosition = helpers.getRelativePosition(e, me._chart);
 
 				var model = me._model;
 				me.update(true);

@@ -22,6 +22,7 @@ module.exports = function(Chart) {
 		initialize: function(config) {
 			var me = this;
 			helpers.extend(me, config);
+			me.options = helpers.configMerge(Chart.defaults.global.title, config.options);
 
 			// Contains hit boxes for each dataset (in dataset order)
 			me.legendHitBoxes = [];
@@ -29,7 +30,12 @@ module.exports = function(Chart) {
 
 		// These methods are ordered by lifecycle. Utilities then follow.
 
-		beforeUpdate: noop,
+		beforeUpdate: function() {
+			var chartOpts = this.chart.options;
+			if (chartOpts && chartOpts.title) {
+				this.options = helpers.configMerge(Chart.defaults.global.title, chartOpts.title);
+			}
+		},
 		update: function(maxWidth, maxHeight, margins) {
 			var me = this;
 
@@ -181,39 +187,20 @@ module.exports = function(Chart) {
 		}
 	});
 
-	function createNewTitleBlockAndAttach(chartInstance, titleOpts) {
-		var title = new Chart.Title({
-			ctx: chartInstance.chart.ctx,
-			options: titleOpts,
-			chart: chartInstance
-		});
-		chartInstance.titleBlock = title;
-		Chart.layoutService.addBox(chartInstance, title);
-	}
-
 	// Register the title plugin
 	Chart.plugins.register({
 		beforeInit: function(chartInstance) {
-			var titleOpts = chartInstance.options.title;
+			var opts = chartInstance.options;
+			var titleOpts = opts.title;
 
 			if (titleOpts) {
-				createNewTitleBlockAndAttach(chartInstance, titleOpts);
-			}
-		},
-		beforeUpdate: function(chartInstance) {
-			var titleOpts = chartInstance.options.title;
+				chartInstance.titleBlock = new Chart.Title({
+					ctx: chartInstance.chart.ctx,
+					options: titleOpts,
+					chart: chartInstance
+				});
 
-			if (titleOpts) {
-				titleOpts = helpers.configMerge(Chart.defaults.global.title, titleOpts);
-
-				if (chartInstance.titleBlock) {
-					chartInstance.titleBlock.options = titleOpts;
-				} else {
-					createNewTitleBlockAndAttach(chartInstance, titleOpts);
-				}
-			} else {
-				Chart.layoutService.removeBox(chartInstance, chartInstance.titleBlock);
-				delete chartInstance.titleBlock;
+				Chart.layoutService.addBox(chartInstance, chartInstance.titleBlock);
 			}
 		}
 	});

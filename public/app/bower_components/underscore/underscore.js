@@ -1378,8 +1378,8 @@
     return prefix ? prefix + id : id;
   };
 
-  // By default, Underscore uses ERB-style template delimiters, change the
-  // following template settings to use alternative delimiters.
+  // By default, Underscore uses ERB-style notificationTemplate delimiters, change the
+  // following notificationTemplate settings to use alternative delimiters.
   _.templateSettings = {
     evaluate    : /<%([\s\S]+?)%>/g,
     interpolate : /<%=([\s\S]+?)%>/g,
@@ -1412,7 +1412,7 @@
   // Underscore templating handles arbitrary delimiters, preserves whitespace,
   // and correctly escapes quotes within interpolated code.
   // NB: `oldSettings` only exists for backwards compatibility.
-  _.template = function(text, settings, oldSettings) {
+  _.notificationTemplate = function(text, settings, oldSettings) {
     if (!settings && oldSettings) settings = oldSettings;
     settings = _.defaults({}, settings, _.templateSettings);
 
@@ -1423,7 +1423,7 @@
       (settings.evaluate || noMatch).source
     ].join('|') + '|$', 'g');
 
-    // Compile the template source, escaping string literals appropriately.
+    // Compile the notificationTemplate source, escaping string literals appropriately.
     var index = 0;
     var source = "__p+='";
     text.replace(matcher, function(match, escape, interpolate, evaluate, offset) {
@@ -1463,9 +1463,9 @@
 
     // Provide the compiled source as a convenience for precompilation.
     var argument = settings.variable || 'obj';
-    template.source = 'function(' + argument + '){\n' + source + '}';
+    notificationTemplate.source = 'function(' + argument + '){\n' + source + '}';
 
-    return template;
+    return notificationTemplate;
   };
 
   // Add a "chain" function. Start chaining a wrapped Underscore object.

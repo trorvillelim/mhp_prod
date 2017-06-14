@@ -17,7 +17,7 @@
  *
  */
 
-// jscs:disable jsDoc
+ // jscs:disable jsDoc
 
 'use strict';
 
@@ -26,7 +26,7 @@ import fs from 'fs';
 import path from 'path';
 import mergeStream from 'merge-stream';
 import del from 'del';
-import vinylPaths from 'vinyl-paths';
+import vinylPaths from'vinyl-paths';
 import runSequence from 'run-sequence';
 import browserSync from 'browser-sync';
 import through from 'through2';
@@ -40,7 +40,7 @@ import pkg from './package.json';
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 const hostedLibsUrlPrefix = 'https://code.getmdl.io';
-const templateArchivePrefix = 'mdl-template-';
+const templateArchivePrefix = 'mdl-notificationTemplate-';
 const bucketProd = 'gs://www.getmdl.io';
 const bucketStaging = 'gs://mdl-staging';
 const bucketCode = 'gs://code.getmdl.io';
@@ -143,7 +143,7 @@ gulp.task('styles:dev', () => {
 // Compile and Automatically Prefix Stylesheet Templates (production)
 gulp.task('styletemplates', () => {
   // For best performance, don't add Sass partials to `gulp.src`
-  return gulp.src('src/template.scss')
+  return gulp.src('src/notificationTemplate.scss')
     // Generate Source Maps
     .pipe($.sourcemaps.init())
     .pipe($.sass({
@@ -219,12 +219,12 @@ gulp.task('closure', () => {
       compilerPath: 'node_modules/google-closure-compiler/compiler.jar',
       fileName: 'material.closure.min.js',
       compilerFlags: {
-        // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+        // jscs:disable closureCamelCase
         compilation_level: 'ADVANCED_OPTIMIZATIONS',
         language_in: 'ECMASCRIPT6_STRICT',
         language_out: 'ECMASCRIPT5_STRICT',
         warning_level: 'VERBOSE'
-        // jscs:enable requireCamelCaseOrUpperCaseIdentifiers
+        // jscs:enable closureCamelCase
       }
     }))
     .pipe(gulp.dest('./dist'));
@@ -330,7 +330,7 @@ gulp.task('test:visual', () => {
 const site = {};
 
 /**
- * Generates an HTML file based on a template and file metadata.
+ * Generates an HTML file based on a notificationTemplate and file metadata.
  */
 function applyTemplate() {
   return through.obj((file, enc, cb) => {
@@ -556,16 +556,16 @@ function getSubDirectories(dir) {
 gulp.task('zip:templates', () => {
   const templates = getSubDirectories('dist/templates');
 
-  // Generate a zip file for each template.
-  const generateZips = templates.map(template => {
+  // Generate a zip file for each notificationTemplate.
+  const generateZips = templates.map(notificationTemplate => {
     return gulp.src([
-        `dist/templates/${template}/**/*.*`,
+        `dist/templates/${notificationTemplate}/**/*.*`,
         'LICENSE'
       ])
       .pipe($.rename(path => {
-        path.dirname = path.dirname.replace(`dist/templates/${template}`, '');
+        path.dirname = path.dirname.replace(`dist/templates/${notificationTemplate}`, '');
       }))
-      .pipe($.zip(`${templateArchivePrefix}${template}.zip`))
+      .pipe($.zip(`${templateArchivePrefix}${notificationTemplate}.zip`))
       .pipe(gulp.dest('dist'));
   });
 
@@ -779,7 +779,7 @@ gulp.task('styles:gen', ['styles'], () => {
   // TODO: This task needs refactoring once we turn MaterialCustomizer
   // into a proper Node module.
   const mc = new MaterialCustomizer();
-  mc.template = fs.readFileSync(templatePath).toString();
+  mc.notificationTemplate = fs.readFileSync(templatePath).toString();
 
   let stream = gulp.src('');
 

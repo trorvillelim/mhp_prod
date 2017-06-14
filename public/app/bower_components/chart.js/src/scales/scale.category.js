@@ -54,10 +54,10 @@ module.exports = function(Chart) {
 			var data = me.chart.data;
 			var isHorizontal = me.isHorizontal();
 
-			if (data.yLabels && !isHorizontal) {
+			if ((data.xLabels && isHorizontal) || (data.yLabels && !isHorizontal)) {
 				return me.getRightValue(data.datasets[datasetIndex].data[index]);
 			}
-			return me.ticks[index - me.minIndex];
+			return me.ticks[index];
 		},
 
 		// Used to get data value locations.  Value can either be an index or a numerical value
@@ -73,8 +73,9 @@ module.exports = function(Chart) {
 			}
 
 			if (me.isHorizontal()) {
-				var valueWidth = me.width / offsetAmt;
-				var widthOffset = (valueWidth * (index - me.minIndex));
+				var innerWidth = me.width - (me.paddingLeft + me.paddingRight);
+				var valueWidth = innerWidth / offsetAmt;
+				var widthOffset = (valueWidth * (index - me.minIndex)) + me.paddingLeft;
 
 				if (me.options.gridLines.offsetGridLines && includeOffset || me.maxIndex === me.minIndex && includeOffset) {
 					widthOffset += (valueWidth / 2);
@@ -82,8 +83,9 @@ module.exports = function(Chart) {
 
 				return me.left + Math.round(widthOffset);
 			}
-			var valueHeight = me.height / offsetAmt;
-			var heightOffset = (valueHeight * (index - me.minIndex));
+			var innerHeight = me.height - (me.paddingTop + me.paddingBottom);
+			var valueHeight = innerHeight / offsetAmt;
+			var heightOffset = (valueHeight * (index - me.minIndex)) + me.paddingTop;
 
 			if (me.options.gridLines.offsetGridLines && includeOffset) {
 				heightOffset += (valueHeight / 2);
@@ -99,13 +101,15 @@ module.exports = function(Chart) {
 			var value;
 			var offsetAmt = Math.max((me.ticks.length - ((me.options.gridLines.offsetGridLines) ? 0 : 1)), 1);
 			var horz = me.isHorizontal();
-			var valueDimension = (horz ? me.width : me.height) / offsetAmt;
+			var innerDimension = horz ? me.width - (me.paddingLeft + me.paddingRight) : me.height - (me.paddingTop + me.paddingBottom);
+			var valueDimension = innerDimension / offsetAmt;
 
 			pixel -= horz ? me.left : me.top;
 
 			if (me.options.gridLines.offsetGridLines) {
 				pixel -= (valueDimension / 2);
 			}
+			pixel -= horz ? me.paddingLeft : me.paddingTop;
 
 			if (pixel <= 0) {
 				value = 0;

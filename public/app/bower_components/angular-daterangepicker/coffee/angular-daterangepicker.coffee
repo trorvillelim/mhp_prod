@@ -4,7 +4,7 @@ picker.constant('dateRangePickerConfig',
   clearLabel: 'Clear'
   locale:
     separator: ' - '
-    format: 'YYYY-MM-DD'
+    format: 'YYYY-MM-DD hh:mm a'
 )
 
 picker.directive 'dateRangePicker', ($compile, $timeout, $parse, dateRangePickerConfig) ->

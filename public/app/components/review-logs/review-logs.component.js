@@ -151,9 +151,11 @@
                     .post('/api/getPatientsTotalLogsByDoctor', _request_body)
                     .then(
                         function(result){
-                            vm.patient_logs = vm.processLogsResults(result.message);
-
-                            console.log(result);
+                            if(result.message.recordset){ // currently prod api return logs on recordset attribute
+                                vm.patient_logs = vm.processLogsResults(result.message.recordset);
+                            }else{
+                               vm.patient_logs = vm.processLogsResults(result.message); // for dev and stage environment
+                            }
                             getPatientChronicCondition(vm.patient_logs);
 
                             setTotalDurationforZeroPatient(vm.patient_logs);

@@ -32,40 +32,18 @@ module.exports = function(Chart) {
 			me.max = null;
 			me.minNotZero = null;
 
-			var hasStacks = opts.stacked;
-			if (hasStacks === undefined) {
-				helpers.each(datasets, function(dataset, datasetIndex) {
-					if (hasStacks) {
-						return;
-					}
-
-					var meta = chart.getDatasetMeta(datasetIndex);
-					if (chart.isDatasetVisible(datasetIndex) && IDMatches(meta) &&
-						meta.stack !== undefined) {
-						hasStacks = true;
-					}
-				});
-			}
-
-			if (opts.stacked || hasStacks) {
-				var valuesPerStack = {};
+			if (opts.stacked) {
+				var valuesPerType = {};
 
 				helpers.each(datasets, function(dataset, datasetIndex) {
 					var meta = chart.getDatasetMeta(datasetIndex);
-					var key = [
-						meta.type,
-						// we have a separate stack for stack=undefined datasets when the opts.stacked is undefined
-						((opts.stacked === undefined && meta.stack === undefined) ? datasetIndex : ''),
-						meta.stack
-					].join('.');
-
 					if (chart.isDatasetVisible(datasetIndex) && IDMatches(meta)) {
-						if (valuesPerStack[key] === undefined) {
-							valuesPerStack[key] = [];
+						if (valuesPerType[meta.type] === undefined) {
+							valuesPerType[meta.type] = [];
 						}
 
 						helpers.each(dataset.data, function(rawValue, index) {
-							var values = valuesPerStack[key];
+							var values = valuesPerType[meta.type];
 							var value = +me.getRightValue(rawValue);
 							if (isNaN(value) || meta.data[index].hidden) {
 								return;
@@ -83,7 +61,7 @@ module.exports = function(Chart) {
 					}
 				});
 
-				helpers.each(valuesPerStack, function(valuesForType) {
+				helpers.each(valuesPerType, function(valuesForType) {
 					var minVal = helpers.min(valuesForType);
 					var maxVal = helpers.max(valuesForType);
 					me.min = me.min === null ? minVal : Math.min(me.min, minVal);
@@ -184,42 +162,46 @@ module.exports = function(Chart) {
 			var start = me.start;
 			var newVal = +me.getRightValue(value);
 			var range;
+			var paddingTop = me.paddingTop;
+			var paddingBottom = me.paddingBottom;
+			var paddingLeft = me.paddingLeft;
 			var opts = me.options;
 			var tickOpts = opts.ticks;
 
 			if (me.isHorizontal()) {
 				range = helpers.log10(me.end) - helpers.log10(start); // todo: if start === 0
 				if (newVal === 0) {
-					pixel = me.left;
+					pixel = me.left + paddingLeft;
 				} else {
-					innerDimension = me.width;
+					innerDimension = me.width - (paddingLeft + me.paddingRight);
 					pixel = me.left + (innerDimension / range * (helpers.log10(newVal) - helpers.log10(start)));
+					pixel += paddingLeft;
 				}
 			} else {
 				// Bottom - top since pixels increase downward on a screen
-				innerDimension = me.height;
+				innerDimension = me.height - (paddingTop + paddingBottom);
 				if (start === 0 && !tickOpts.reverse) {
 					range = helpers.log10(me.end) - helpers.log10(me.minNotZero);
 					if (newVal === start) {
-						pixel = me.bottom;
+						pixel = me.bottom - paddingBottom;
 					} else if (newVal === me.minNotZero) {
-						pixel = me.bottom - innerDimension * 0.02;
+						pixel = me.bottom - paddingBottom - innerDimension * 0.02;
 					} else {
-						pixel = me.bottom - innerDimension * 0.02 - (innerDimension * 0.98/ range * (helpers.log10(newVal)-helpers.log10(me.minNotZero)));
+						pixel = me.bottom - paddingBottom - innerDimension * 0.02 - (innerDimension * 0.98/ range * (helpers.log10(newVal)-helpers.log10(me.minNotZero)));
 					}
 				} else if (me.end === 0 && tickOpts.reverse) {
 					range = helpers.log10(me.start) - helpers.log10(me.minNotZero);
 					if (newVal === me.end) {
-						pixel = me.top;
+						pixel = me.top + paddingTop;
 					} else if (newVal === me.minNotZero) {
-						pixel = me.top + innerDimension * 0.02;
+						pixel = me.top + paddingTop + innerDimension * 0.02;
 					} else {
-						pixel = me.top + innerDimension * 0.02 + (innerDimension * 0.98/ range * (helpers.log10(newVal)-helpers.log10(me.minNotZero)));
+						pixel = me.top + paddingTop + innerDimension * 0.02 + (innerDimension * 0.98/ range * (helpers.log10(newVal)-helpers.log10(me.minNotZero)));
 					}
 				} else {
 					range = helpers.log10(me.end) - helpers.log10(start);
-					innerDimension = me.height;
-					pixel = me.bottom - (innerDimension / range * (helpers.log10(newVal) - helpers.log10(start)));
+					innerDimension = me.height - (paddingTop + paddingBottom);
+					pixel = (me.bottom - paddingBottom) - (innerDimension / range * (helpers.log10(newVal) - helpers.log10(start)));
 				}
 			}
 			return pixel;
@@ -230,11 +212,11 @@ module.exports = function(Chart) {
 			var value, innerDimension;
 
 			if (me.isHorizontal()) {
-				innerDimension = me.width;
-				value = me.start * Math.pow(10, (pixel - me.left) * range / innerDimension);
+				innerDimension = me.width - (me.paddingLeft + me.paddingRight);
+				value = me.start * Math.pow(10, (pixel - me.left - me.paddingLeft) * range / innerDimension);
 			} else {  // todo: if start === 0
-				innerDimension = me.height;
-				value = Math.pow(10, (me.bottom - pixel) * range / innerDimension) / me.start;
+				innerDimension = me.height - (me.paddingTop + me.paddingBottom);
+				value = Math.pow(10, (me.bottom - me.paddingBottom - pixel) * range / innerDimension) / me.start;
 			}
 			return value;
 		}

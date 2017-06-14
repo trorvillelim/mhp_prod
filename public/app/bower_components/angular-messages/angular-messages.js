@@ -20,10 +20,10 @@ var jqLite = angular.element;
  *
  * The `ngMessages` module provides enhanced support for displaying messages within templates
  * (typically within forms or when rendering message objects that return key/value data).
- * Instead of relying on JavaScript code and/or complex ng-if statements within your form template to
+ * Instead of relying on JavaScript code and/or complex ng-if statements within your form notificationTemplate to
  * show and hide error messages specific to the state of an input field, the `ngMessages` and
  * `ngMessage` directives are designed to handle the complexity, inheritance and priority
- * sequencing based on the order of how the messages are defined in the template.
+ * sequencing based on the order of how the messages are defined in the notificationTemplate.
  *
  * Currently, the ngMessages module only contains the code for the `ngMessages`, `ngMessagesInclude`
  * `ngMessage` and `ngMessageExp` directives.
@@ -71,7 +71,7 @@ var jqLite = angular.element;
  *
  * By default, `ngMessages` will only display one message for a particular key/value collection at any time. If more
  * than one message (or error) key is currently true, then which message is shown is determined by the order of messages
- * in the HTML template code (messages declared first are prioritised). This mechanism means the developer does not have
+ * in the HTML notificationTemplate code (messages declared first are prioritised). This mechanism means the developer does not have
  * to prioritise messages using custom JavaScript code.
  *
  * Given the following error object for our example (which informs us that the field `myField` currently has both the
@@ -100,11 +100,11 @@ var jqLite = angular.element;
  *
  * ## Reusing and Overriding Messages
  * In addition to prioritization, ngMessages also allows for including messages from a remote or an inline
- * template. This allows for generic collection of messages to be reused across multiple parts of an
+ * notificationTemplate. This allows for generic collection of messages to be reused across multiple parts of an
  * application.
  *
  * ```html
- * <script type="text/ng-template" id="error-messages">
+ * <script type="text/ng-notificationTemplate" id="error-messages">
  *   <div ng-message="required">This field is required</div>
  *   <div ng-message="minlength">This field is too short</div>
  * </script>
@@ -115,12 +115,12 @@ var jqLite = angular.element;
  * ```
  *
  * However, including generic messages may not be useful enough to match all input fields, therefore,
- * `ngMessages` provides the ability to override messages defined in the remote template by redefining
+ * `ngMessages` provides the ability to override messages defined in the remote notificationTemplate by redefining
  * them within the directive container.
  *
  * ```html
- * <!-- a generic template of error messages known as "my-custom-messages" -->
- * <script type="text/ng-template" id="my-custom-messages">
+ * <!-- a generic notificationTemplate of error messages known as "my-custom-messages" -->
+ * <script type="text/ng-notificationTemplate" id="my-custom-messages">
  *   <div ng-message="required">This field is required</div>
  *   <div ng-message="minlength">This field is too short</div>
  * </script>
@@ -136,9 +136,9 @@ var jqLite = angular.element;
  *            required />
  *   </label>
  *   <!-- any ng-message elements that appear BEFORE the ng-messages-include will
- *        override the messages present in the ng-messages-include template -->
+ *        override the messages present in the ng-messages-include notificationTemplate -->
  *   <div ng-messages="myForm.myEmail.$error" role="alert">
- *     <!-- this required message has overridden the template message -->
+ *     <!-- this required message has overridden the notificationTemplate message -->
  *     <div ng-message="required">You did not enter your email address</div>
  *
  *     <!-- this is a brand new message and will appear last in the prioritization -->
@@ -151,7 +151,7 @@ var jqLite = angular.element;
  * ```
  *
  * In the example HTML code above the message that is set on required will override the corresponding
- * required message defined within the remote template. Therefore, with particular input fields (such
+ * required message defined within the remote notificationTemplate. Therefore, with particular input fields (such
  * email addresses, date fields, autocomplete inputs, etc...), specialized error messages can be applied
  * while more generic messages can be used to handle other, more general input errors.
  *
@@ -523,8 +523,8 @@ angular.module('ngMessages', [])
    * @scope
    *
    * @description
-   * `ngMessagesInclude` is a directive with the purpose to import existing ngMessage template
-   * code from a remote template and place the downloaded template code into the exact spot
+   * `ngMessagesInclude` is a directive with the purpose to import existing ngMessage notificationTemplate
+   * code from a remote notificationTemplate and place the downloaded notificationTemplate code into the exact spot
    * that the ngMessagesInclude directive is placed within the ngMessages container. This allows
    * for a series of pre-defined messages to be reused and also allows for the developer to
    * determine what messages are overridden due to the placement of the ngMessagesInclude directive.
@@ -544,7 +544,7 @@ angular.module('ngMessages', [])
    *
    * {@link module:ngMessages Click here} to learn more about `ngMessages` and `ngMessage`.
    *
-   * @param {string} ngMessagesInclude|src a string value corresponding to the remote template.
+   * @param {string} ngMessagesInclude|src a string value corresponding to the remote notificationTemplate.
    */
   .directive('ngMessagesInclude',
     ['$templateRequest', '$document', '$compile', function($templateRequest, $document, $compile) {
@@ -558,10 +558,10 @@ angular.module('ngMessages', [])
           if ($scope.$$destroyed) return;
 
           if (isString(html) && !html.trim()) {
-            // Empty template - nothing to compile
+            // Empty notificationTemplate - nothing to compile
             replaceElementWithMarker(element, src);
           } else {
-            // Non-empty template - compile and link
+            // Non-empty notificationTemplate - compile and link
             $compile(html)($scope, function(contents) {
               element.after(contents);
               replaceElementWithMarker(element, src);

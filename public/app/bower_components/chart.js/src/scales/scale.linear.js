@@ -28,43 +28,21 @@ module.exports = function(Chart) {
 			me.min = null;
 			me.max = null;
 
-			var hasStacks = opts.stacked;
-			if (hasStacks === undefined) {
-				helpers.each(datasets, function(dataset, datasetIndex) {
-					if (hasStacks) {
-						return;
-					}
-
-					var meta = chart.getDatasetMeta(datasetIndex);
-					if (chart.isDatasetVisible(datasetIndex) && IDMatches(meta) &&
-						meta.stack !== undefined) {
-						hasStacks = true;
-					}
-				});
-			}
-
-			if (opts.stacked || hasStacks) {
-				var valuesPerStack = {};
+			if (opts.stacked) {
+				var valuesPerType = {};
 
 				helpers.each(datasets, function(dataset, datasetIndex) {
 					var meta = chart.getDatasetMeta(datasetIndex);
-					var key = [
-						meta.type,
-						// we have a separate stack for stack=undefined datasets when the opts.stacked is undefined
-						((opts.stacked === undefined && meta.stack === undefined) ? datasetIndex : ''),
-						meta.stack
-					].join('.');
-
-					if (valuesPerStack[key] === undefined) {
-						valuesPerStack[key] = {
+					if (valuesPerType[meta.type] === undefined) {
+						valuesPerType[meta.type] = {
 							positiveValues: [],
 							negativeValues: []
 						};
 					}
 
 					// Store these per type
-					var positiveValues = valuesPerStack[key].positiveValues;
-					var negativeValues = valuesPerStack[key].negativeValues;
+					var positiveValues = valuesPerType[meta.type].positiveValues;
+					var negativeValues = valuesPerType[meta.type].negativeValues;
 
 					if (chart.isDatasetVisible(datasetIndex) && IDMatches(meta)) {
 						helpers.each(dataset.data, function(rawValue, index) {
@@ -87,7 +65,7 @@ module.exports = function(Chart) {
 					}
 				});
 
-				helpers.each(valuesPerStack, function(valuesForType) {
+				helpers.each(valuesPerType, function(valuesForType) {
 					var values = valuesForType.positiveValues.concat(valuesForType.negativeValues);
 					var minVal = helpers.min(values);
 					var maxVal = helpers.max(values);
@@ -154,25 +132,31 @@ module.exports = function(Chart) {
 			// This must be called after fit has been run so that
 			// this.left, this.top, this.right, and this.bottom have been defined
 			var me = this;
+			var paddingLeft = me.paddingLeft;
+			var paddingBottom = me.paddingBottom;
 			var start = me.start;
 
 			var rightValue = +me.getRightValue(value);
 			var pixel;
+			var innerDimension;
 			var range = me.end - start;
 
 			if (me.isHorizontal()) {
-				pixel = me.left + (me.width / range * (rightValue - start));
-				return Math.round(pixel);
+				innerDimension = me.width - (paddingLeft + me.paddingRight);
+				pixel = me.left + (innerDimension / range * (rightValue - start));
+				return Math.round(pixel + paddingLeft);
 			}
-
-			pixel = me.bottom - (me.height / range * (rightValue - start));
+			innerDimension = me.height - (me.paddingTop + paddingBottom);
+			pixel = (me.bottom - paddingBottom) - (innerDimension / range * (rightValue - start));
 			return Math.round(pixel);
 		},
 		getValueForPixel: function(pixel) {
 			var me = this;
 			var isHorizontal = me.isHorizontal();
-			var innerDimension = isHorizontal ? me.width : me.height;
-			var offset = (isHorizontal ? pixel - me.left : me.bottom - pixel) / innerDimension;
+			var paddingLeft = me.paddingLeft;
+			var paddingBottom = me.paddingBottom;
+			var innerDimension = isHorizontal ? me.width - (paddingLeft + me.paddingRight) : me.height - (me.paddingTop + paddingBottom);
+			var offset = (isHorizontal ? pixel - me.left - paddingLeft : me.bottom - paddingBottom - pixel) / innerDimension;
 			return me.start + ((me.end - me.start) * offset);
 		},
 		getPixelForTick: function(index) {

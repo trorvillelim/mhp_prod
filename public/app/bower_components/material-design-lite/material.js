@@ -145,27 +145,6 @@ componentHandler = (function() {
   }
 
   /**
-   * Create an event object.
-   *
-   * @param {string} eventType The type name of the event.
-   * @param {boolean} bubbles Whether the event should bubble up the DOM.
-   * @param {boolean} cancelable Whether the event can be canceled.
-   * @returns {!Event}
-   */
-  function createEvent_(eventType, bubbles, cancelable) {
-    if ('CustomEvent' in window && typeof window.CustomEvent === 'function') {
-      return new CustomEvent(eventType, {
-        bubbles: bubbles,
-        cancelable: cancelable
-      });
-    } else {
-      var ev = document.createEvent('Events');
-      ev.initEvent(eventType, bubbles, cancelable);
-      return ev;
-    }
-  }
-
-  /**
    * Searches existing DOM for elements of our component type and upgrades them
    * if they have not already been upgraded.
    *
@@ -209,13 +188,6 @@ componentHandler = (function() {
     if (!(typeof element === 'object' && element instanceof Element)) {
       throw new Error('Invalid argument provided to upgrade MDL element.');
     }
-    // Allow upgrade to be canceled by canceling emitted event.
-    var upgradingEv = createEvent_('mdl-componentupgrading', true, true);
-    element.dispatchEvent(upgradingEv);
-    if (upgradingEv.defaultPrevented) {
-      return;
-    }
-
     var upgradedList = getUpgradedListOfElement_(element);
     var classesToUpgrade = [];
     // If jsClass is not provided scan the registered components to find the
@@ -258,8 +230,16 @@ componentHandler = (function() {
           'Unable to find a registered component for the given class.');
       }
 
-      var upgradedEv = createEvent_('mdl-componentupgraded', true, false);
-      element.dispatchEvent(upgradedEv);
+      var ev;
+      if ('CustomEvent' in window && typeof window.CustomEvent === 'function') {
+        ev = new CustomEvent('mdl-componentupgraded', {
+          bubbles: true, cancelable: false
+        });
+      } else {
+        ev = document.createEvent('Events');
+        ev.initEvent('mdl-componentupgraded', true, true);
+      }
+      element.dispatchEvent(ev);
     }
   }
 
@@ -381,7 +361,15 @@ componentHandler = (function() {
       upgrades.splice(componentPlace, 1);
       component.element_.setAttribute('data-upgraded', upgrades.join(','));
 
-      var ev = createEvent_('mdl-componentdowngraded', true, false);
+      var ev;
+      if ('CustomEvent' in window && typeof window.CustomEvent === 'function') {
+        ev = new CustomEvent('mdl-componentdowngraded', {
+          bubbles: true, cancelable: false
+        });
+      } else {
+        ev = document.createEvent('Events');
+        ev.initEvent('mdl-componentdowngraded', true, true);
+      }
       component.element_.dispatchEvent(ev);
     }
   }
@@ -514,9 +502,9 @@ window.addEventListener('load', function() {
 // MIT license
 if (!Date.now) {
     /**
-     * Date.now polyfill.
-     * @return {number} the current Date
-     */
+   * Date.now polyfill.
+   * @return {number} the current Date
+   */
     Date.now = function () {
         return new Date().getTime();
     };
@@ -536,9 +524,9 @@ for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
 if (/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
     var lastTime = 0;
     /**
-     * requestAnimationFrame polyfill.
-     * @param  {!Function} callback the callback function.
-     */
+   * requestAnimationFrame polyfill.
+   * @param  {!Function} callback the callback function.
+   */
     window.requestAnimationFrame = function (callback) {
         var now = Date.now();
         var nextTime = Math.max(lastTime + 16, now);
@@ -1700,9 +1688,7 @@ MaterialRadio.prototype.onChange_ = function (event) {
         var button = radios[i].querySelector('.' + this.CssClasses_.RADIO_BTN);
         // Different name == different group, so no point updating those.
         if (button.getAttribute('name') === this.btnElement_.getAttribute('name')) {
-            if (typeof radios[i]['MaterialRadio'] !== 'undefined') {
-                radios[i]['MaterialRadio'].updateClasses_();
-            }
+            radios[i]['MaterialRadio'].updateClasses_();
         }
     }
 };
@@ -2731,15 +2717,13 @@ function MaterialTab(tab, ctx) {
             tab.appendChild(rippleContainer);
         }
         tab.addEventListener('click', function (e) {
-            if (tab.getAttribute('href').charAt(0) === '#') {
-                e.preventDefault();
-                var href = tab.href.split('#')[1];
-                var panel = ctx.element_.querySelector('#' + href);
-                ctx.resetTabState_();
-                ctx.resetPanelState_();
-                tab.classList.add(ctx.CssClasses_.ACTIVE_CLASS);
-                panel.classList.add(ctx.CssClasses_.ACTIVE_CLASS);
-            }
+            e.preventDefault();
+            var href = tab.href.split('#')[1];
+            var panel = ctx.element_.querySelector('#' + href);
+            ctx.resetTabState_();
+            ctx.resetPanelState_();
+            tab.classList.add(ctx.CssClasses_.ACTIVE_CLASS);
+            panel.classList.add(ctx.CssClasses_.ACTIVE_CLASS);
         });
     }
 }
@@ -3228,7 +3212,6 @@ MaterialLayout.prototype.CssClasses_ = {
     TAB_BAR_BUTTON: 'mdl-layout__tab-bar-button',
     TAB_BAR_LEFT_BUTTON: 'mdl-layout__tab-bar-left-button',
     TAB_BAR_RIGHT_BUTTON: 'mdl-layout__tab-bar-right-button',
-    TAB_MANUAL_SWITCH: 'mdl-layout__tab-manual-switch',
     PANEL: 'mdl-layout__tab-panel',
     HAS_DRAWER: 'has-drawer',
     HAS_TABS: 'has-tabs',
@@ -3592,14 +3575,12 @@ function MaterialLayoutTab(tab, tabs, panels, layout) {
         rippleContainer.appendChild(ripple);
         tab.appendChild(rippleContainer);
     }
-    if (!layout.tabBar_.classList.contains(layout.CssClasses_.TAB_MANUAL_SWITCH)) {
-        tab.addEventListener('click', function (e) {
-            if (tab.getAttribute('href').charAt(0) === '#') {
-                e.preventDefault();
-                selectTab();
-            }
-        });
-    }
+    tab.addEventListener('click', function (e) {
+        if (tab.getAttribute('href').charAt(0) === '#') {
+            e.preventDefault();
+            selectTab();
+        }
+    });
     tab.show = selectTab;
 }
 window['MaterialLayoutTab'] = MaterialLayoutTab;
@@ -3860,8 +3841,8 @@ MaterialRipple.prototype.downHandler_ = function (event) {
             x = Math.round(bound.width / 2);
             y = Math.round(bound.height / 2);
         } else {
-            var clientX = event.clientX !== undefined ? event.clientX : event.touches[0].clientX;
-            var clientY = event.clientY !== undefined ? event.clientY : event.touches[0].clientY;
+            var clientX = event.clientX ? event.clientX : event.touches[0].clientX;
+            var clientY = event.clientY ? event.clientY : event.touches[0].clientY;
             x = Math.round(clientX - bound.left);
             y = Math.round(clientY - bound.top);
         }

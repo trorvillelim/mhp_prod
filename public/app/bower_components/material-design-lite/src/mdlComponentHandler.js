@@ -142,27 +142,6 @@ componentHandler = (function() {
   }
 
   /**
-   * Create an event object.
-   *
-   * @param {string} eventType The type name of the event.
-   * @param {boolean} bubbles Whether the event should bubble up the DOM.
-   * @param {boolean} cancelable Whether the event can be canceled.
-   * @returns {!Event}
-   */
-  function createEvent_(eventType, bubbles, cancelable) {
-    if ('CustomEvent' in window && typeof window.CustomEvent === 'function') {
-      return new CustomEvent(eventType, {
-        bubbles: bubbles,
-        cancelable: cancelable
-      });
-    } else {
-      var ev = document.createEvent('Events');
-      ev.initEvent(eventType, bubbles, cancelable);
-      return ev;
-    }
-  }
-
-  /**
    * Searches existing DOM for elements of our component type and upgrades them
    * if they have not already been upgraded.
    *
@@ -206,13 +185,6 @@ componentHandler = (function() {
     if (!(typeof element === 'object' && element instanceof Element)) {
       throw new Error('Invalid argument provided to upgrade MDL element.');
     }
-    // Allow upgrade to be canceled by canceling emitted event.
-    var upgradingEv = createEvent_('mdl-componentupgrading', true, true);
-    element.dispatchEvent(upgradingEv);
-    if (upgradingEv.defaultPrevented) {
-      return;
-    }
-
     var upgradedList = getUpgradedListOfElement_(element);
     var classesToUpgrade = [];
     // If jsClass is not provided scan the registered components to find the
@@ -255,8 +227,16 @@ componentHandler = (function() {
           'Unable to find a registered component for the given class.');
       }
 
-      var upgradedEv = createEvent_('mdl-componentupgraded', true, false);
-      element.dispatchEvent(upgradedEv);
+      var ev;
+      if ('CustomEvent' in window && typeof window.CustomEvent === 'function') {
+        ev = new CustomEvent('mdl-componentupgraded', {
+          bubbles: true, cancelable: false
+        });
+      } else {
+        ev = document.createEvent('Events');
+        ev.initEvent('mdl-componentupgraded', true, true);
+      }
+      element.dispatchEvent(ev);
     }
   }
 
@@ -378,7 +358,15 @@ componentHandler = (function() {
       upgrades.splice(componentPlace, 1);
       component.element_.setAttribute('data-upgraded', upgrades.join(','));
 
-      var ev = createEvent_('mdl-componentdowngraded', true, false);
+      var ev;
+      if ('CustomEvent' in window && typeof window.CustomEvent === 'function') {
+        ev = new CustomEvent('mdl-componentdowngraded', {
+          bubbles: true, cancelable: false
+        });
+      } else {
+        ev = document.createEvent('Events');
+        ev.initEvent('mdl-componentdowngraded', true, true);
+      }
       component.element_.dispatchEvent(ev);
     }
   }

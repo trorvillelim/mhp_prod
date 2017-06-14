@@ -139,11 +139,11 @@ module.exports = function(Chart) {
 			var dataset = this.getDataset();
 			var custom = point.custom || {};
 
-			if (!isNaN(custom.borderWidth)) {
+			if (custom.borderWidth) {
 				borderWidth = custom.borderWidth;
-			} else if (!isNaN(dataset.pointBorderWidth)) {
+			} else if (dataset.pointBorderWidth) {
 				borderWidth = helpers.getValueAtIndexOrDefault(dataset.pointBorderWidth, index, borderWidth);
-			} else if (!isNaN(dataset.borderWidth)) {
+			} else if (dataset.borderWidth) {
 				borderWidth = dataset.borderWidth;
 			}
 
@@ -292,16 +292,14 @@ module.exports = function(Chart) {
 				points[i].transition(easingDecimal);
 			}
 
-			Chart.canvasHelpers.clipArea(me.chart.chart.ctx, me.chart.chartArea);
 			// Transition and Draw the line
 			if (lineEnabled(me.getDataset(), me.chart.options)) {
 				meta.dataset.transition(easingDecimal).draw();
 			}
-			Chart.canvasHelpers.unclipArea(me.chart.chart.ctx);
 
 			// Draw the points
 			for (i=0, ilen=points.length; i<ilen; ++i) {
-				points[i].draw(me.chart.chartArea);
+				points[i].draw();
 			}
 		},
 

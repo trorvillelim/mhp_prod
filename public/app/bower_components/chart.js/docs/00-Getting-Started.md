@@ -44,11 +44,11 @@ To import Chart.js using an awesome module loader:
 ```javascript
 
 // Using CommonJS
-var Chart = require('chart.js')
+var Chart = require('src/chart.js')
 var myChart = new Chart({...})
 
 // ES6
-import Chart from 'chart.js'
+import Chart from 'src/chart.js'
 let myChart = new Chart({...})
 
 // Using requirejs

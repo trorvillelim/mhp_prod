@@ -35,7 +35,9 @@
           extend.locale = localeExtend;
           return extend;
         };
-        el = $(element);
+
+
+          el = $(element);
         customOpts = $scope.opts;
         opts = _mergeOpts({}, dateRangePickerConfig, customOpts);
         _picker = null;
@@ -81,17 +83,33 @@
         });
         modelCtrl.$formatters.push(function(objValue) {
           var f;
-          f = function(date) {
-            if (!moment.isMoment(date)) {
+          /** modification for undefined startDate log error */
+          if (!objValue) {
+              objValue = {startDate : ''}
+          }
+          /** end of modification for undefined startDate log error */
+
+            f = function(date) {
+
+              // if (date.startDate == ''){ /**  filter null values to avoid throwing of startDate is null                                                                                                                  */
+              //   return ''
+              // }
+              if (!moment.isMoment(date)) {
               return moment(date).format(opts.locale.format);
-            } else {
-              return date.format(opts.locale.format);
+              }
+              else {
+                if (!date){
+                    return''
+                }else{
+                    return date.format(opts.locale.format);
+                }
             }
           };
           if (opts.singleDatePicker && objValue) {
-            return f(objValue);
-          } else if (objValue.startDate) {
-            return [f(objValue.startDate), f(objValue.endDate)].join(opts.locale.separator);
+              return f(objValue);
+          }
+          else if (objValue.startDate) {
+              return [f(objValue.startDate), f(objValue.endDate)].join(opts.locale.separator);
           } else {
             return '';
           }

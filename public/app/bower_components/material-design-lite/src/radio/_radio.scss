@@ -25,10 +25,7 @@
 
   display: inline-block;
 
-  vertical-align: middle;
-
   box-sizing: border-box;
-  height: $radio-label-height;
   margin: 0;
   padding-left: 0;
 
@@ -101,13 +98,13 @@
 
   @include material-animation-default(0.28s);
   transition-property: transform;
-  transform: scale(0, 0);
+  transform: scale3d(0, 0, 0);
 
   border-radius: 50%;
   background: $radio-color;
 
   .mdl-radio.is-checked & {
-    transform: scale(1, 1);
+    transform: scale3d(1, 1, 1);
   }
 
   fieldset[disabled] .mdl-radio &,

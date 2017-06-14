@@ -1,13 +1,14 @@
 {
     'use strict';
-    window.onload = function () {
+
+    window.addEventListener('load', function () {
         getmdlSelect.init('.getmdl-select');
         document.addEventListener("DOMNodeInserted", function (ev) {
             if (ev.relatedNode.querySelectorAll(".getmdl-select").length > 0) {
                 componentHandler.upgradeDom();
             }
         }, false);
-    };
+    });
 
     var getmdlSelect = {
         defaultValue : {
@@ -46,7 +47,6 @@
                     if ("createEvent" in document) {
                         var evt = document.createEvent("HTMLEvents");
                         evt.initEvent("change", false, true);
-                        menu['MaterialMenu'].hide();
                         input.dispatchEvent(evt);
                     } else {
                         input.fireEvent("onchange");
@@ -54,12 +54,10 @@
                 };
             });
         },
-        init: function (selector, widthDef) {
+        init: function (selector) {
             var dropdowns = document.querySelectorAll(selector);
             [].forEach.call(dropdowns, function (i) {
                 getmdlSelect.addEventListeners(i);
-                var width = widthDef ? widthDef : (i.querySelector('.mdl-menu').offsetWidth ? i.querySelector('.mdl-menu').offsetWidth : getmdlSelect.defaultValue.width);
-                i.style.width = width + 'px';
             });
         }
     };

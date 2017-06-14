@@ -1,0 +1,20 @@
+{
+    "app":{
+      "version" : 1.1,
+      "build" : 20170613
+    } ,
+    "config" : {
+        "user": "rw",
+        "password": "rw1",
+        "server": "mhp.cl4cjyhmdurv.us-east-1.rds.amazonaws.com", 
+        "database": "mHPCntx"
+    },
+     "keys" : {
+        "APP_ARN" : "arn:aws:sns:us-east-1:375162590464:app/APNS/mhp-ws-sns",
+        "REGION" : "us-east-1",
+        "profile" : ""
+    },
+    "port" : "9000",
+    "duration" : "30" ,
+    "mhpURL" :"https://dev.mhealthpharma.com"
+}

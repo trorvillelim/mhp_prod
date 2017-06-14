@@ -121,7 +121,7 @@
 		};
 
 		document.getElementById('randomizeData').addEventListener('click', function() {
-			config.data.datasets.forEach(function(dataset) {
+			$.each(config.data.datasets, function(i, dataset) {
 				dataset.data = dataset.data.map(function() {
 					return randomScalingFactor();
 				});

@@ -71,11 +71,11 @@ function getPatientsTotalLogsByDoctor(_connection, _connection_request, physicia
                 sql += 'WHERE   ';
                 sql += '   physicians.userId = @PARAM_PHYSICIAN_USER_ID ';
 
-                if ( month )
-                    sql += '   AND MONTH(patient_review_logs.ReviewedDate) != @PARAM_MONTH ';
+                // if ( month )
+                //     sql += '   AND MONTH(patient_review_logs.ReviewedDate) != @PARAM_MONTH ';
 
-                if ( year > 0 )
-                    sql += '   AND YEAR(patient_review_logs.ReviewedDate) = @PARAM_YEAR  ';
+                // if ( year > 0 )
+                //     sql += '   AND YEAR(patient_review_logs.ReviewedDate) = @PARAM_YEAR  ';
 
                 sql += 'GROUP BY  ';
                 sql += ' user_patient.id, user_patient.LName, user_patient.FName)  ' ;  // end of 2nd group

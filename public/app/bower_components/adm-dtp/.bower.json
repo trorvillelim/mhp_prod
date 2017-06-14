@@ -5,7 +5,10 @@
     "ADM | Amirkabir Data Miners <info@adm-co.net>"
   ],
   "description": "Pure AngularJs Gregorian and Jalali smart dateTimePicker",
-  "main": "ADM-dateTimePicker.js",
+  "main": [
+    "dist/ADM-dateTimePicker.min.js",
+    "dist/ADM-dateTimePicker.min.css"
+  ],
   "moduleType": [
     "globals"
   ],
@@ -23,17 +26,17 @@
   ],
   "license": "MIT",
   "ignore": [
-    "*.log",
-    "*.DS_Store",
-    ".git",
-    ".gitignore",
-    ".sass-cache"
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
   ],
-  "_release": "2be3fc2b94",
+  "_release": "c41d027438",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "2be3fc2b94672dcbb769de307c1fb0007eedc66e"
+    "commit": "c41d02743867530888d02e7cd542a693b2423f65"
   },
   "_source": "https://github.com/AmirkabirDataMiners/ADM-dateTimePicker.git",
   "_target": "*",

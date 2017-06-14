@@ -41,11 +41,11 @@
     "test",
     "tests"
   ],
-  "_release": "fd25eb2ad3",
+  "_release": "89ce9f9b0b",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "fd25eb2ad33b4aa4dd7088aa2bdc11698f440393"
+    "commit": "89ce9f9b0bfc404cfdd1dd8d66a8ede511366b4f"
   },
   "_source": "https://github.com/CreativeIT/getmdl-select.git",
   "_target": "*",

@@ -110,7 +110,6 @@
     TAB_BAR_BUTTON: 'mdl-layout__tab-bar-button',
     TAB_BAR_LEFT_BUTTON: 'mdl-layout__tab-bar-left-button',
     TAB_BAR_RIGHT_BUTTON: 'mdl-layout__tab-bar-right-button',
-    TAB_MANUAL_SWITCH: 'mdl-layout__tab-manual-switch',
     PANEL: 'mdl-layout__tab-panel',
 
     HAS_DRAWER: 'has-drawer',
@@ -550,15 +549,12 @@
       tab.appendChild(rippleContainer);
     }
 
-    if (!layout.tabBar_.classList.contains(
-      layout.CssClasses_.TAB_MANUAL_SWITCH)) {
-      tab.addEventListener('click', function(e) {
-        if (tab.getAttribute('href').charAt(0) === '#') {
-          e.preventDefault();
-          selectTab();
-        }
-      });
-    }
+    tab.addEventListener('click', function(e) {
+      if (tab.getAttribute('href').charAt(0) === '#') {
+        e.preventDefault();
+        selectTab();
+      }
+    });
 
     tab.show = selectTab;
   }

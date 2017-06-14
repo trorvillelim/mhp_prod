@@ -339,7 +339,7 @@ function mdEditDialog($compile, $controller, $document, $mdUtil, $q, $rootScope,
    * resolve
    * scope
    * targetEvent
-   * template
+   * notificationTemplate
    * templateUrl
    */
   var defaultOptions = {
@@ -351,7 +351,7 @@ function mdEditDialog($compile, $controller, $document, $mdUtil, $q, $rootScope,
   
   function build(template, options) {
     var scope = $rootScope.$new();
-    var element = $compile(template)(scope);
+    var element = $compile(notificationTemplate)(scope);
     var backdrop = $mdUtil.createBackdrop(scope, 'md-edit-dialog-backdrop');
     var controller;
     
@@ -433,29 +433,29 @@ function mdEditDialog($compile, $controller, $document, $mdUtil, $q, $rootScope,
   
   function getTemplate(options) {
     return $q(function (resolve, reject) {
-      var template = options.template;
+      var template = options.notificationTemplate;
       
       function illegalType(type) {
-        reject('Unexpected template value. Expected a string; received a ' + type + '.');
+        reject('Unexpected notificationTemplate value. Expected a string; received a ' + type + '.');
       }
       
-      if(template) {
-        return angular.isString(template) ? resolve(template) : illegalType(typeof template);
+      if(notificationTemplate) {
+        return angular.isString(notificationTemplate) ? resolve(notificationTemplate) : illegalType(typeof notificationTemplate);
       }
       
       if(options.templateUrl) {
-        template = $templateCache.get(options.templateUrl);
+        notificationTemplate = $templateCache.get(options.templateUrl);
         
-        if(template) {
-          return resolve(template);
+        if(notificationTemplate) {
+          return resolve(notificationTemplate);
         }
         
         var success = function (template) {
-          return resolve(template);
+          return resolve(notificationTemplate);
         };
         
         var error = function () {
-          return reject('Error retrieving template from URL.');
+          return reject('Error retrieving notificationTemplate from URL.');
         };
         
         return $templateRequest(options.templateUrl).then(success, error);
@@ -609,7 +609,7 @@ function mdEditDialog($compile, $controller, $document, $mdUtil, $q, $rootScope,
         title: options.title,
         size: size
       },
-      template:
+      notificationTemplate:
         '<md-edit-dialog>' +
           '<div layout="column" class="md-content">' +
             '<div ng-if="size === \'large\'" class="md-title">{{title || \'Edit\'}}</div>' +
@@ -671,7 +671,7 @@ function mdEditDialog($compile, $controller, $document, $mdUtil, $q, $rootScope,
         options.resolve[prop] = results.shift();
       }
       
-      return build(template, options);
+      return build(notificationTemplate, options);
     });
   };
   
