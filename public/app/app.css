@@ -1,0 +1,339 @@
+html,body {
+}
+
+section.ribbon {
+    background-image: linear-gradient(to right, #45b0c1 0%, #554d99 100%);
+    background-repeat: repeat-x;
+    opacity: 0.6;
+}
+
+i.material-icons {
+    cursor: pointer;
+}
+
+i.material-icons.error {
+    color : #ee4237
+}
+
+i.material-icons.success {
+    color : #0cea46;
+}
+
+.md-errors-spacer {
+    display: none;
+}
+
+.md-checkbox.md-default-theme.md-checked .md-icon, md-checkbox.md-checked .md-icon {
+    background-color: #4E6BA3;
+}
+
+.mdl-textfield {
+    padding: 0;
+    width: 100%;
+}
+
+textarea {
+    min-height: 84px!important;
+}
+
+.mhp-profile-column nav p a, 
+span.mdl-badge, 
+table.md-table tbody tr {
+    cursor: pointer;
+}
+
+table.md-table.tbl-read-only tbody tr{
+    cursor: default;
+}
+
+.mhp-profile-column nav p a.active{
+    font-weight: bold;
+}
+
+patient-profile-container .mhp-profile-column nav p {
+    margin: 0;
+    padding: 9px;
+    cursor: pointer;    
+}
+
+patient-profile-container .mhp-profile-column nav p:hover, 
+patient-profile-container .mhp-profile-column nav p.active{
+    background-color: #e4e4e4;
+}
+
+patient-profile-container .mhp-profile-column nav p.active a{
+    color:#929292!important;
+    font-weight: bold;
+}
+
+*:focus {
+    outline: none;
+}
+
+.mdl-grid .fm {
+    margin-left: 10px;
+}
+
+md-checkbox .md-label {
+    margin-left: 25px;
+}
+
+/* Custom css for datepicker datepicker */
+.calTypeContainer.ng-scope.gregorian {
+    display:none!important;
+}
+
+.ADMdtp-calendar-container {
+    top: 30px!important;
+}
+
+.ADMdtp-calendar-container .today.adm-button {
+    position: relative!important;
+    float: right;
+    top: -10px;
+    left: 10px!important;
+    padding: 0;
+}
+.ADMdtp-calendar-container svg.timeSelectIcon {
+    margin-top: 5px;
+}
+
+.hide-time .ADMdtp-calendar-container footer,
+.ADMdtp-container .ADMdtp-calendar-container .monthPickerContainer .monthContainer .yearContainer p:before {
+    display : none;
+}
+
+.date-icon {
+    position: absolute;
+    right: 10px;
+    color: #8e8e8e;
+    cursor: pointer;
+}
+
+/* Datatable styles */
+table.md-table tbody.md-body>tr.md-row:hover {
+    background-color: #eee!important;
+}
+
+/* Datetime picker styles */
+.angularjs-datetime-picker {
+    z-index: 99;
+}
+
+/* Themes */
+.md-button.md-default-theme.md-primary.md-raised, .md-button.md-primary.md-raised, .md-button.md-default-theme.md-primary.md-fab, .md-button.md-primary.md-fab,
+.buttons .mdl-button--accent.mdl-button--accent:not([disabled]), /* buttons */
+.md-checkbox.md-default-theme.md-checked .md-icon, md-checkbox.md-checked .md-icon, /* checkbox */
+md-progress-linear.md-default-theme .md-bar, md-progress-linear .md-bar /* table progress */ {
+    background-color: rgb(69, 176, 193);
+}
+
+.material-icons, /* icons */
+md-tabs.md-default-theme .md-tab.md-active,
+md-tabs .md-tab.md-active, md-tabs.md-default-theme .md-tab.md-active md-icon, 
+md-tabs .md-tab.md-active md-icon, md-tabs.md-default-theme .md-tab.md-focused, 
+md-tabs .md-tab.md-focused, md-tabs.md-default-theme .md-tab.md-focused md-icon, 
+md-tabs .md-tab.md-focused md-icon {
+    color: #45b0c1;
+}
+
+.md-button.md-default-theme.md-primary.md-raised:not([disabled]):hover, 
+.md-button.md-primary.md-raised:not([disabled]):hover, 
+.md-button.md-default-theme.md-primary.md-fab:not([disabled]):hover, 
+.md-button.md-primary.md-fab:not([disabled]):hover,
+.mdl-button--accent.mdl-button--accent:not([disabled]):hover {
+    background-color: rgb(141, 204, 215);
+}
+
+/* angularjs md dialog button colors*/
+md-dialog-actions > .md-primary{
+    background-color: #45b0c1 !important;
+    color: white !important;
+    font-variant: normal !important;
+}
+
+.mdl-badge[data-badge]:after { /* notification badge */
+	top: -3px;
+    right: -30px;
+	background: rgb(69, 176, 193);
+}
+
+md-tabs md-ink-bar { /* tab */
+    color:#45b0c1;
+    background-color:#45b0c1;
+}
+
+md-tabs .md-tab:active .md-ripple-container { /* tab ripple */
+  background-color: rgba(69, 176, 193,.1);
+}
+
+md-tabs .md-tab .md-ripple-container .md-ripple { /* tab ripple */
+  background: #45b0c1;
+  border-color: #45b0c1;
+}
+
+md-progress-linear.md-default-theme .md-container, md-progress-linear .md-container { /* table progress */
+    background-color: rgba(69,176,193,0.3);
+}
+
+/* generic class */
+.center {
+    text-align: center;
+}
+
+.err-login-failed {
+    background: #ee4236;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+}
+
+/* overwrite md style */
+.mdl-card__supporting-text {
+    width: 100%;
+}
+
+/* prevent textarea note to grow with extra height*/
+textarea{
+    height: auto !important;
+    padding-top: 20px !important;
+    overflow-y: auto !important;
+}
+
+.tall-textarea{
+    min-height: 200px !important;
+    height: auto !important;
+    padding-top: 20px !important;
+    overflow-y: auto !important;
+}
+
+/* css work around for login label and pagination label, conflicted from bootstrap css and mdl-card__supporting-text class*/
+.label{
+    color: rgba(0,0,0,.54) !important;
+    font-size: 12px !important;
+}
+.mdl-card__supporting-text{
+    font-size: 16px !important;
+}
+
+/* uniform button size */
+.mdl-button{
+    width: 115px !important;
+    margin: 3px !important;
+}
+
+.date-button-options{
+    width: 90px !important;
+    margin: 3px !important;
+    padding: 0;
+    background-color: #45b0c1 !important;
+    min-width: 55px !important;
+}
+
+.material-menu-button{
+    min-width: 30px !important;
+    min-height: 20px !important;
+    margin:  0 !important;
+    width: 0 !important;
+}
+
+.simple-label{
+    font-size: 12px;
+    color: #636363;
+}
+
+/** =============================== for file upload  ============================== **/
+
+.drop-box{
+border-radius: 5px;
+background-color: #f2f2f2;
+border: 4px dashed #b6b6b6;
+min-height: 150px;
+}
+
+.drop-box *{
+    text-align: center;
+    margin: auto;
+    line-height: 150px;
+}
+.drag-over, .drop-box:hover{
+    border-color: #45b0c1 !important;
+}
+
+/** ============= custom ============ **/
+
+.cstm-read-only-text-min-width-200 {
+    min-width:200px;
+    text-align: center;
+}
+
+md-radio-group.cstm-radio-button-tight md-radio-button{
+    margin-right : 10px!important;
+}
+
+md-radio-button .md-label{
+    margin-left: 23px !important;
+}
+
+.cstm-margin-bottom-10{
+    margin-bottom:10px!important;
+}
+
+/*** ======== @media screen max-width: 1279px ====== **/
+
+@media screen and (max-width: 1279px) {
+    .cstm-on-mobile-padding-top-5 {
+        padding-top:5px;
+    }
+
+    .cstm-on-mobile-padding-bottom-5 {
+        padding-bottom:5px;
+    }    
+    
+    .cstm-on-mobile-padding-vertical-5 {
+        padding-top:5px;
+        padding-bottom:5px;
+    }
+
+
+}
+
+
+/* angularjs toast to center work around*/
+.md-bottom.md-center {
+    text-align: center !important;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    bottom: 100px;
+}
+
+.md-top.md-center {
+    text-align: center !important;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    top: 100px;
+}
+
+/** ng-class **/
+.nonEditableRow{
+  cursor: default !important;  }
+
+.currentSelected {
+    background-color: rgb(141, 204, 215) !important; }
+
+.prevSelected {
+    background-color: rgb(141, 204, 215) !important; }
+
+.nextSelected {
+    background-color: rgb(141, 204, 215) !important; }
+
+/** md-expansion **/
+md-expansion-panel-header[layout] .md-expansion-panel-header-container{
+    width: 100%!important;
+}
+
+/* work around to limit the width of condition column on patient review log report */
+#table-condtion tbody > tr > td:nth-child(4) {
+    max-width: 400px !important;
+}

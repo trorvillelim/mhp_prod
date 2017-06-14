@@ -1,0 +1,26 @@
+<div class="mdl-card mdl-shadow--2dp">
+    <div class="frame">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                 <div class="cstm-on-mobile-padding-bottom-5" flex="90">
+                    <h4>Medications and Notes</h4>
+                </div>
+            <!--<md-tabs md-dynamic-height md-border-bottom>-->
+                <!--<md-tab label="Medications and Notes" ng-click="$ctrl.onSelectTab(false)">-->
+                    <!--<md-content class="mdl-tabs__panel">-->
+                        <patient-medication-component history="$ctrl.isHistory" medication-list="$ctrl.medicationList" ng-if="$ctrl.medicationList"></patient-medication-component>
+                    <!--</md-content>-->
+                <!--</md-tab>-->
+
+
+                <!--<md-tab label="Medication History" ng-click="$ctrl.onSelectTab(true)">-->
+                    <!--<md-content class="mdl-tabs__panel">-->
+                        <!--<patient-medication-component history="$ctrl.isHistory" medicationlist="$ctrl.medicationList"></patient-medication-component>-->
+                    <!--</md-content>-->
+                <!--</md-tab>-->
+            <!--</md-tabs>-->
+
+            </div>
+        </div>
+    </div>
+</div>

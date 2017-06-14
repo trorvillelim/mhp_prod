@@ -1,0 +1,105 @@
+<div class="mdl-card mdl-shadow--2dp">
+    <div class="frame">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet">
+
+                <div layout-gt-md="row" layout="column" layout-align="start center" layout-margin>
+                    <div class="cstm-on-mobile-padding-bottom-5" flex="33">
+                        <md-input-container class="md-block">
+                            <label>Search</label>
+                            <input ng-model="$ctrl.search_value" name="search">
+                        </md-input-container>                        
+                    </div>
+                    <div class="cstm-on-mobile-padding-vertical-5"  layout="row"  layout-align="start center"  flex="33" layout-margin>
+                        <button 
+                            ng-disabled="$ctrl.query_month_year.position >= $ctrl.select_month_year_list.length" 
+                            ng-click="$ctrl.onClickDateNavigations($ctrl.query_month_year_id + 1);" 
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options"> &lt; </button>
+
+                        <md-input-container class="md-block">
+                            <md-select 
+                                    ng-model="$ctrl.query_month_year_id" 
+                                    aria-label="month_year"
+                                    ng-change="$ctrl.onChangeMonthYearDate();">
+                                <md-option ng-repeat="month_year in $ctrl.select_month_year_list" ng-value="month_year.id" >
+                                            {{month_year.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>                              
+
+                        <button 
+                            ng-disabled="$ctrl.query_month_year.position <= 1" 
+                            ng-click="$ctrl.onClickDateNavigations($ctrl.query_month_year_id - 1);" 
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options"> &gt; </button>
+                    </div><!--Navigations-->
+                    <div class="cstm-on-mobile-padding-vertical-5" flex="33" layout-gt-md="row" layout-align="end center">
+                        <div class="buttons">
+                            <md-button 
+                                ng-hide="$ctrl.process_patient_logs" 
+                                ng-click="$ctrl.openPDFReport(true)" 
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                                Export PDF
+                            </md-button>
+                            <!--<md-button 
+                                ng-hide="$ctrl.process_patient_logs" 
+                                ng-click="$ctrl.openPDFReport(false)" 
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                                View PDF
+                            </md-button>                            -->
+                        </div>
+                    </div>                    
+                </div><!--Filters-->                               
+
+                <md-content layout="column" flex>
+                    <md-table-container>
+                        <table id="table-condtion" md-table md-progress="$ctrl.get_logs_promise">
+                            <thead md-head md-order="$ctrl.query.order">
+                                <tr md-row>
+                                    <th md-column md-order-by="patient_lastname">Patient Name</th>
+                                    <th md-column md-order-by="total_duration_count">Time Spent</th>
+                                    <th md-column md-order-by="tier_billing_code">Billing Code</th>
+                                    <th md-column md-order-by="chronic_conditions">Chronic conditions</th>
+
+                                    <!--<th md-column md-order-by="tier_billing_amount">Billing Amount</th>                                    -->
+                                    <th md-column md-order-by="formatted_tier_info">Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row 
+                                    ng-click="$ctrl.patientClick(patient.patient_id)"
+                                    ng-repeat="
+                                                patient in $ctrl.patient_logs 
+                                                        | filter: $ctrl.search_value 
+                                                        | orderBy: $ctrl.query.order 
+                                                        | limitTo: $ctrl.query.limit : ($ctrl.query.page -1) * $ctrl.query.limit as filtered_counter">
+
+                                    <td md-cell>{{patient.patient_lastname}}, {{patient.patient_firstname}}</td>
+                                    <td md-cell>{{patient.formatted_total_duration_in_minutes}}</td>
+                                    <td md-cell>{{patient.tier_billing_code}}</td>
+                                    <td md-cell >{{patient.chronic_conditions}}</td>
+
+                                    <!--<td md-cell>{{patient.tier_billing_amount | currency : "$ "}}</td>                                    -->
+                                    <td md-cell>
+                                        <strong>{{patient.formatted_tier_info}}</strong>
+                                    </td>
+                                </tr>
+                                <tr ng-show="filtered_counter.length <= 0 && !$ctrl.process_patient_logs">
+                                    <td md-cell colspan="10">No Data for patients</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                    <md-table-pagination 
+                        md-limit="$ctrl.query.limit" 
+                        md-limit-options="$ctrl.tableConfig.rowsPerPage" 
+                        md-page="$ctrl.query.page" 
+                        md-total="{{($ctrl.patient_logs | filter: $ctrl.search_value ).length}}"                             
+                        md-page-select="true"
+                        md-boundary-links="true">
+                    </md-table-pagination>
+                </md-content>
+
+            </div>
+        </div>
+    </div>
+</div>

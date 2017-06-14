@@ -1,0 +1,97 @@
+<form name="timeLogDetailsForm">
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+            <input hidden name="PatientId" ng-model="$ctrl.logValue.PatientId">
+
+            <!--<div class="mdl-textfield mdl-js-textfield mdl-textfield&#45;&#45;floating-label">-->
+                <!--<md-input-container class="md-block">-->
+                    <!--<label>Page Reviewed</label>-->
+                    <!--&lt;!&ndash;<md-select required name="PageReviewed" ng-model="$ctrl.logValue.PageReviewed">-->
+                        <!--<md-option ng-repeat="page in $ctrl.pageReviewedList" value="{{page.name}}">{{ page.name }}</md-option>-->
+                    <!--</md-select>&ndash;&gt;-->
+                    <!--<md-select required name="PageReviewed" ng-model="$ctrl.logValue.PageReviewed"-->
+                               <!--ng-init="$ctrl.logValue.PageReviewed">-->
+                        <!--<md-option ng-repeat="page in $ctrl.pageReviewedList" value="{{page.name}}" >{{ page.name }}</md-option>-->
+                    <!--</md-select>-->
+
+                    <!--<div ng-messages="timeLogDetailsForm.PageReviewed.$error" role="alert" ng-show="timeLogDetailsForm.PageReviewed.$touched">-->
+                        <!--<div ng-message="required">Page Reviewed is required.</div>-->
+                    <!--</div>-->
+                <!--</md-input-container>-->
+            <!--</div>-->
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+
+                <md-input-container class="md-block" >
+                    <label>Date/Time Logged</label>
+                    <input date-range-picker name="ReviewedDate"
+                           ng-pattern="$ctrl.dateRegex"
+                           type="text"
+                           ng-model="$ctrl.logValue.ReviewedDate"
+                           options="{singleDatePicker:true, timePicker:true, locale:{format:'YYYY-MM-DD hh:mm a'}}"
+                           required>
+                    <div ng-messages="timeLogDetailsForm.ReviewedDate.$error" role="alert" ng-show="timeLogDetailsForm.ReviewedDate.$touched">
+                        <div ng-message="required">Date/Time is required.</div>
+                        <div ng-message="pattern">Invalid format.</div>
+                    </div>
+                </md-input-container>
+
+                <!--<md-input-container class="md-block">-->
+                    <!--<label>Date/Time Logged</label>-->
+                    <!--<adm-dtp ng-model='$ctrl.logValue.ReviewedDate' options="{dtpType : 'date', format: 'YYYY-MM-DD hh:mm', multiple:false, autoClose : true}">-->
+                        <!--<div class="input-group date">-->
+                            <!--<input type='text' dtp-input ng-model='$ctrl.logValue.ReviewedDate' class="form-control input-sm" name="ReviewedDate"  required/>-->
+                            <!--<span dtp-toggle class="material-icons noselect date-icon">date_range</span>-->
+                        <!--</div>-->
+                        <!--<div ng-messages="timeLogDetailsForm.ReviewedDate.$error" role="alert" ng-show="timeLogDetailsForm.ReviewedDate.$touched">-->
+                            <!--<div ng-message="required">Date/Time is required.</div>-->
+                        <!--</div>-->
+                    <!--</adm-dtp>-->
+                <!--</md-input-container>-->
+            </div>
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <md-input-container class="md-block">
+                    <label>Duration (Minutes)</label>
+                    <input required type="number" ng-model="$ctrl.logValue.Duration" name="Duration" autocomplete="off" min="0">
+                    <div ng-messages="timeLogDetailsForm.Duration.$error" role="alert" ng-show="timeLogDetailsForm.Duration.$touched">
+                        <div ng-message="number">The field Duration must be a number.</div>
+                        <div ng-messages="timeLogDetailsForm.Duration.$error" role="alert" ng-show="timeLogDetailsForm.Duration.$touched">
+                                <div ng-message="required">Duration is required.</div>
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <md-input-container class="md-block">
+                <label style="margin-bottom: 20px">Comment</label>
+                <!--<textarea ng-model="$ctrl.logValue.Note" md-maxlength="150" md-select-on-focus></textarea>-->
+                <md-radio-group ng-model="$ctrl.comment">
+                    <div class="content-grid  mdl-grid ">
+                        <div class="mdl-cell mdl-cell--6-col">
+                            <md-radio-button  ng-repeat="option in $ctrl.commentChoices"
+                                              ng-value="option.comment"
+                                              ng-click="$ctrl.commentSelected(option.comment)">
+                                {{  option.comment  }}
+                            </md-radio-button>
+
+                            <div class="mdl-textfield mdl-js-textfield">
+                                <input ng-model="$ctrl.logValue.Note" value="{{$ctrl.comment}}" name="note">
+                            </div>
+                        </div>
+                    </div>
+                </md-radio-group>
+            </md-input-container>
+        </div>
+    </div>
+
+    <div style="height: 20px;"></div>
+
+    <div class="buttons">
+        <button ng-click="$ctrl.onCancelLog()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Cancel</button>
+        <button ng-click="$ctrl.onSubmit()" ng-disabled="timeLogDetailsForm.$invalid" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" >Submit</button>
+    </div>
+</form>

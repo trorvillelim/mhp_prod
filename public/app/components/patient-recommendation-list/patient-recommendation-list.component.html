@@ -1,0 +1,78 @@
+<div class="mdl-card mdl-shadow--2dp">
+    <div class="frame">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet">
+                <form name="recommendationForm">
+                    <md-content ng-show="!$ctrl.show_details">
+                        <!--<div class="buttons" flex>
+                            <md-button ng-click="$ctrl.createNew()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Create New</md-button>
+                        </div>-->
+
+                         <div layout="row" layout-align="space-between center">
+                                <div class="cstm-on-mobile-padding-bottom-5" flex="50">
+                                    <h4>Recommendations</h4>
+                                </div>
+                                <div class="cstm-on-mobile-padding-bottom-5 buttons" layout="row" layout-align-gt-sm="end center" layout-align="center center" flex="50">
+                                    <md-button ng-click="$ctrl.createNew()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Create New</md-button>
+                                </div>
+                        </div>
+
+                        <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--4-col-desktop">
+                            <md-input-container class="md-block">
+                                <label>Search</label>
+                                <input ng-model="$ctrl.search_value" name="search">
+                            </md-input-container>
+                        </div>
+                        <md-table-container>
+                            <table md-table md-progress="$ctrl.get_recommendation">
+                                <thead md-head md-order="$ctrl.query.order">
+                                    <tr md-row>
+                                        <th md-column md-order-by="recText">Recommendation &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
+                                        <th md-column md-order-by="recDate">Date</th>
+                                        <!-- <th md-column>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody md-body>
+                                    <tr md-row ng-repeat="recommendation in $ctrl.recommendations
+                                                            | orderBy: $ctrl.query.order
+                                                            | filter:$ctrl.search_value
+                                                            | limitTo: $ctrl.query.limit : ($ctrl.query.page -1) * $ctrl.query.limit as filtered_counter"
+                                            ng-click="recommendation.isRecDateGreater && $ctrl.editClick(recommendation.id) " 
+                                            ng-disabled="recommendation.isRecDateGreater"
+                                            ng-class="{ nonEditableRow : recommendation.isRecDateGreater != true}">
+                                            
+                                        <td md-cell>{{recommendation.recText}}</td>
+                                        <td md-cell>{{recommendation.recDate | date:'yyyy-MM-dd hh:mm a'}}</td>
+                                    </tr>
+                                    <tr ng-show="filtered_counter.length <= 0 && !$ctrl.process_updateRecommendationList">
+                                        <td md-cell colspan="10">No Data for Recommendations</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </md-table-container>
+                        <md-table-pagination 
+                            md-limit="$ctrl.query.limit"
+                            md-limit-options="$ctrl.tableConfig.rowsPerPage" 
+                            md-page="$ctrl.query.page" 
+                            md-total="{{($ctrl.recommendations | filter:$ctrl.search_value ).length}}"
+                            md-page-select="true" md-boundary-links="true">
+                        </md-table-pagination>
+                    </md-content>
+                </form>
+                <md-content ng-if="$ctrl.show_details">
+                    <div layout="row" layout-align="space-between center">
+                        <div class="cstm-on-mobile-padding-bottom-5" flex="90">
+                            <h4>Recommendations</h4>
+                        </div>
+                    </div>
+                    <patient-recommendation-details class="mdl-cell mdl-cell--8-col" 
+                        recommendation-to-view="$ctrl.recommendation_to_view" 
+                        recommendation-to-view-copy="$ctrl.recommendation_to_view_copy"
+                        recommendations="$ctrl.recommendations"
+                        show-details="$ctrl.show_details">
+                    </patient-recommendation-details>
+                </md-content>
+            </div>
+        </div>
+    </div>
+</div>

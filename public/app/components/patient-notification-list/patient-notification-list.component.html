@@ -1,0 +1,69 @@
+<form name="notificationListForm" ng-show="!$ctrl.show_details">
+    <md-content ng-show="!$ctrl.show_details">
+       
+        <div layout="row" layout-align="space-between center">
+            <div class="cstm-on-mobile-padding-bottom-5" flex="70" layout="row" >
+              <h4>Notification Base Subject : </h4>  <span style="padding: 10px"> {{ $ctrl.selectedNotificationBase.subject }} </span>
+                
+            </div>
+            <div class="cstm-on-mobile-padding-bottom-5 buttons" layout="row" layout-align-gt-sm="end center" layout-align="center center" flex="30">
+                <md-button ng-click="$ctrl.displayNotificationList(false)" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Back</md-button>
+                <md-button ng-click="$ctrl.createNew()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Create New</md-button>
+            </div>
+        </div>
+       
+          <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col-desktop">
+            <md-input-container class="md-block">
+                <label>Search</label>
+                <input ng-model="$ctrl.search_value" name="search">
+            </md-input-container>
+        </div>
+        <md-table-container>
+            <table md-table md-progress="$ctrl.baseController.get_notifications">
+                <thead md-head md-order="$ctrl.query.order">
+                    <tr md-row>
+                        <th md-column md-order-by="eventDate">Event Date</th>
+                        <th md-column md-order-by="deliverydDate">Delivery Date</th>
+                        <th md-column md-order-by="confirmationDate">Confirmed Date</th>
+                        <th md-column md-order-by="responseType">Response Type</th>
+                        <th md-column md-order-by="status">Status</th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr  md-row ng-repeat="notification in $ctrl.selectedNotificationBase.notifications |
+                                        filter:$ctrl.search_value | orderBy:$ctrl.query.order |
+                                        limitTo: $ctrl.query.limit : ($ctrl.query.page -1) * $ctrl.query.limit"
+                                        ng-click="$ctrl.edit(notification.id)">
+                        <td md-cell>{{notification.eventDate       | date:'yyyy-MM-dd hh:mm a' }}</td>
+                        <td md-cell>{{notification.deliverydDate   | date:'yyyy-MM-dd hh:mm a'}}</td>
+                        <td md-cell>{{notification.confirmationDate| date:'yyyy-MM-dd hh:mm a'}}</td>
+                        <td md-cell>{{notification.responseType | responseType}}</td>
+                        <td md-cell>{{notification.status | status}}</td>
+                    </tr>
+                    <tr ng-show="$ctrl.selectedNotificationBase.notifications.length <= 0">
+                        <td md-cell colspan="10">No Data for notifications</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination md-limit="$ctrl.query.limit" md-limit-options="$ctrl.tableConfig.rowsPerPage" md-page="$ctrl.query.page"
+            md-total="{{$ctrl.selectedNotificationBase.notifications.length}}" md-page-select="true" md-boundary-links="true">
+        </md-table-pagination>
+    </md-content>
+</form>
+
+<div ng-if="$ctrl.show_details">
+    <div layout="row" layout-align="space-between center">
+        <div class="cstm-on-mobile-padding-bottom-5" flex="50">
+            <h4>Notification</h4>
+        </div>
+    </div>
+        
+    <patient-notification-details
+        show-details="$ctrl.show_details"
+        notification-to-view="$ctrl.notification_to_view"
+        notification-to-view-copy="$ctrl.notification_to_view_copy"
+        notifications="$ctrl.template"
+        notification-base="$ctrl.notification_base">
+    </patient-notification-details>
+</div>

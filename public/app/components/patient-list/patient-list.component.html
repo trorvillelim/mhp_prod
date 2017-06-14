@@ -1,0 +1,83 @@
+<style>
+    form[name="patientListForm"] table.md-table:not(.md-row-select) th.md-column:first-child {
+        padding-right: 10em;
+    }
+
+    form[name="patientListForm"] table.md-table:not(.md-row-select) th.md-column:last-child {
+        padding-right: 7em;
+    }
+
+    form[name="patientListForm"] .check-container{
+            margin-right: 10px;
+    }
+</style>
+
+<div class="mdl-card mdl-shadow--2dp">
+    <div class="frame">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell mdl-cell--12-col-tablet">
+                <form name="patientListForm">
+                    <div class="mdl-cell mdl-cell--4-col-tablet mdl-cell--4-col-desktop">
+                        <md-input-container class="md-block">
+                            <label>Search</label>
+                            <input ng-model="$ctrl.search_value" name="search">
+                        </md-input-container>
+                    </div>
+
+                    <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                        <!--<span class="check-container">Patients: </span> -->
+                        <span flex="100" ng-repeat="alertType in $ctrl.alertTypes" class="check-container"  layout-align="center center"  layout-padding >
+                            <md-checkbox
+                            ng-model="alertType.checked" name="alertType.name" ng-change="$ctrl.updateAlertFilter(alertType)">
+                                {{ alertType.description }}
+                            </md-checkbox>
+                        </span>
+                    </div>
+
+                    <md-content layout="column" flex>
+                        <md-table-container>
+                            <table md-table md-progress="$ctrl.get_patient_list">
+                                <thead md-head md-order="$ctrl.query.order">
+                                    <tr md-row>
+                                        <th md-column md-order-by="fName">Name</th>
+                                        <th md-column md-order-by="dob">Age</th>
+                                        <th md-column md-order-by="gender">Gender</th>
+                                        <th md-column md-order-by="email">Email</th>
+                                        <th md-column md-order-by="city">City</th>
+                                        <th md-column md-order-by="phone1">Phone  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </th>
+                                    </tr>
+                                </thead>
+                                <tbody md-body>
+                                    <tr md-row ng-repeat="patient in $ctrl.patients
+                                                            | filter : $ctrl.alert_filters
+                                                            | orderBy: $ctrl.query.order
+                                                            | filter : $ctrl.search_value
+                                                            | limitTo: $ctrl.query.limit : ($ctrl.query.page -1) * $ctrl.query.limit as filtered_counter"
+                                                ng-click="$ctrl.patientRowClick(patient.userId)">
+                                        <td md-cell>{{patient.fName}} {{patient.mName}} {{patient.lName}}</td>
+                                        <td md-cell>{{patient.dob | age}}</td>
+                                        <td md-cell>{{patient.gender | gender }}</td>
+                                        <td md-cell>{{patient.email}}</td>
+                                        <td md-cell>{{patient.city}}</td>
+                                        <td md-cell>{{patient.phone1}}<br>{{patient.phone2}}</td>
+                                    </tr>
+                                    <tr ng-show="filtered_counter.length <= 0 && !$ctrl.process_patientList">
+                                        <td md-cell colspan="10">No Data for patients</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </md-table-container>
+                        <md-table-pagination 
+                            md-limit="$ctrl.query.limit" 
+                            md-limit-options="$ctrl.tableConfig.rowsPerPage" 
+                            md-page="$ctrl.query.page" 
+                            md-total="{{($ctrl.patients | filter: $ctrl.alert_filters | filter: $ctrl.search_value).length}}"
+                            md-page-select="true" 
+                            md-boundary-links="true">
+                        </md-table-pagination>
+                    </md-content>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

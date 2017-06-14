@@ -1,0 +1,184 @@
+<form name="patientNotificationBasesDetailsForm">
+    <div class="mdl-grid">
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Alert / Reminder</label>
+                <md-select required name="notificationtype" ng-model="$ctrl.notificationToView.notificationtype">
+                    <md-option ng-value="{{0}}">Reminder</md-option>
+                    <md-option ng-value="{{1}}">Alert</md-option>
+                </md-select>
+                <div ng-messages="patientNotificationBasesDetailsForm.notificationtype.$error" role="alert" ng-show="patientNotificationBasesDetailsForm.notificationtype.$touched">
+                    <div ng-message="required">Alert / Reminder is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Type</label>
+                <md-select required name="type" ng-model="$ctrl.notificationToView.type" >
+                    <md-option ng-value="{{0}}">MeasureBP</md-option>
+                    <md-option ng-value="{{1}}">SBPOutOfRange</md-option>
+                    <md-option ng-value="{{2}}">DBPOutOfRange</md-option>
+                    <md-option ng-value="{{3}}">TakeDrug</md-option>
+                    <md-option ng-value="{{4}}">BuyDrug</md-option>
+                    <md-option ng-value="{{5}}">DoctorAttention</md-option>
+                </md-select>
+                <div ng-messages="patientNotificationBasesDetailsForm.type.$error" role="alert" ng-show="patientNotificationBasesDetailsForm.type.$touched">
+                    <div ng-message="required">Type is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <md-checkbox ng-model="$ctrl.notificationToView.requireConfirmation" name="requireConfirmation" aria-label="Require Confirmation">
+                    Require Confirmation
+                </md-checkbox>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>How To End</label>
+                <md-select name="howToEnd" ng-model="$ctrl.notificationToView.howToEnd">
+                    <md-option ng-value="{{0}}">noEnd</md-option>
+                    <md-option ng-value="{{1}}">byEndDate</md-option>
+                    <md-option ng-value="{{2}}">byNumberOfOccurences</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Subject</label>
+                <input ng-model="$ctrl.notificationToView.subject" name="subject" required>
+                  <div ng-messages="patientNotificationBasesDetailsForm.subject.$error" role="alert" ng-show="patientNotificationBasesDetailsForm.subject.$touched">
+                    <div ng-message="required">Subject is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Description</label>
+                <input ng-model="$ctrl.notificationToView.description" name="description">
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <!--<md-input-container class="md-block">
+                <md-datepicker name="startDate" ng-model="$ctrl.notificationToView.startDate" md-placeholder="Start Date"></md-datepicker>
+            </md-input-container>-->
+
+            <md-input-container class="md-block ">
+                <label>Start Date and End Date</label>
+                <input date-range-picker
+                       ng-model="$ctrl.notificationToView.rangeDate"
+                       name="rangeDate"
+                       ng-pattern="$ctrl.dateRegex"
+                       class="date-picker" type="text"
+                       options="$ctrl.dateRangeOptions"
+                       required
+                       min="$ctrl.currentDate">
+                <div ng-messages="patientNotificationBasesDetailsForm.rangeDate.$error" role="alert" ng-show="patientNotificationBasesDetailsForm.rangeDate.$touched">
+                    <div ng-message="required">Start Date and End Date are required.</div>
+                    <div ng-message="pattern">Invalid Date.</div>
+                </div>
+                <!--<adm-dtp ng-model='$ctrl.notificationToView.startDate' options="{multiple : false, format: 'YYYY-MM-DD', autoClose : true}" full-data="start_Date"> -->
+                    <!--<div class="input-group date">-->
+                        <!--<input required type='text' name="startDate" ng-model='$ctrl.notificationToView.startDate' dtp-input class="form-control input-sm"  />-->
+                    <!--</div>-->
+                    <!--<span dtp-toggle class="material-icons noselect date-icon">date_range</span>-->
+                <!--</adm-dtp>-->
+            </md-input-container>
+        </div>
+        <!--<div class="mdl-cell&#45;&#45;6-col mdl-cell&#45;&#45;4-col-tablet fm">-->
+            <!--&lt;!&ndash;<md-input-container class="md-block">-->
+                <!--<md-datepicker name="endDate" ng-model="$ctrl.notificationToView.endDate" md-placeholder="End Date"></md-datepicker>-->
+            <!--</md-input-container>&ndash;&gt;-->
+
+            <!--<md-input-container class="md-block hide-time">-->
+                <!--<label>End Date</label>-->
+                <!--<adm-dtp ng-model='$ctrl.notificationToView.endDate' options="{multiple : false, format: 'YYYY-MM-DD', autoClose : true}" mindate="{{start_Date.unix}}"> -->
+                    <!--<div class="input-group date"> -->
+                        <!--<input required type='text' name="endDate" ng-model='$ctrl.notificationToView.endDate' dtp-input class="form-control input-sm"  />-->
+                    <!--</div>-->
+                    <!--<span dtp-toggle class="material-icons noselect date-icon">date_range</span>-->
+                <!--</adm-dtp>-->
+                 <!--<div ng-messages="patientNotificationBasesDetailsForm.endDate.$error" role="alert" ng-show="patientNotificationBasesDetailsForm.endDate.$touched">-->
+                    <!--<div ng-message="required">End Date is required.</div>-->
+                <!--</div>-->
+            <!--</md-input-container>-->
+        <!--</div>-->
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>End After Number Of Occurrences</label>
+                <input ng-model="$ctrl.notificationToView.endAfterNumberOfOccurrencies" type="number" min="0" name="endAfterNumberOfOccurrencies">
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Interval (hr)</label>
+                <input ng-model="$ctrl.notificationToView.hoursInterval" type="number" min="0" name="hoursInterval">
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Day of Week</label>
+                <md-select required name="dayOfWeek" ng-model="$ctrl.notificationToView.dayOfWeek">
+                    <md-option ng-value="{{0}}">None</md-option>
+                    <md-option ng-value="{{1}}">Sunday</md-option>
+                    <md-option ng-value="{{2}}">Monday</md-option>
+                    <md-option ng-value="{{4}}">Tuesday</md-option>
+                    <md-option ng-value="{{8}}">Wednesday</md-option>
+                    <md-option ng-value="{{16}}">Thursday</md-option>
+                    <md-option ng-value="{{32}}">Friday</md-option>
+                    <md-option ng-value="{{64}}">Saturday</md-option>
+                    <md-option ng-value="{{62}}">Weekdays</md-option>
+                    <md-option ng-value="{{127}}">Weekend</md-option>
+                </md-select>
+                <div ng-messages="patientNotificationBasesDetailsForm.dayOfWeek.$error" role="alert" ng-show="patientNotificationBasesDetailsForm.dayOfWeek.$touched">
+                    <div ng-message="required">Day of Week is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>From</label>
+                <input ng-model="$ctrl.notificationToView.from" name="from">
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Status</label>
+                <md-select required name="status" ng-model="$ctrl.notificationToView.status">
+                    <md-option ng-value="{{0}}">Active</md-option>
+                    <md-option ng-value="{{1}}">Disabled</md-option>
+                    <md-option ng-value="{{2}}">Suspended</md-option>
+                </md-select>
+                <div ng-messages="patientNotificationBasesDetailsForm.status.$error" role="alert" ng-show="patientNotificationBasesDetailsForm.status.$touched">
+                    <div ng-message="required">Status is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <!--<div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Notification Template Id</label>
+                <md-select required name="notificationTemplateId" ng-model="$ctrl.notificationToView.notificationTemplateId">
+                    <md-option ng-value="{{1}}">notificationSubject1</md-option>
+                    <md-option ng-value="{{2}}">notificationSubject2</md-option>
+                    <md-option ng-value="{{3}}">notificationSubject3</md-option>
+                    <md-option ng-value="{{4}}">notificationSubject4</md-option>
+                    <md-option ng-value="{{5}}">notificationSubject5</md-option>
+                </md-select>
+                <div ng-messages="patientNotificationBasesDetailsForm.notificationTemplateId.$error" role="alert" ng-show="patientNotificationBasesDetailsForm.notificationTemplateId.$touched">
+                    <div ng-message="required">Notification Template Id is required.</div>
+                </div>
+            </md-input-container>
+        </div>-->
+    </div>
+
+    <div class="buttons">
+        <md-button ng-click="$ctrl.cancel();" type="reset" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Cancel</md-button>
+        
+        <md-button ng-click="$ctrl.submit();" 
+            type="submit" ng-disabled="patientNotificationBasesDetailsForm.$invalid" 
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save</md-button>
+    </div>
+
+</form>

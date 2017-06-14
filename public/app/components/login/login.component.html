@@ -1,0 +1,47 @@
+<div class="login mdl-card mdl-shadow--2dp" ng-cloak>
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__logo"><img src="assets/images/logo.png" ng-click="$ctrl.onClickLogo()" style="cursor:initial;"></h2>
+    </div>
+    <form name="loginForm">
+        <div class="mdl-card__supporting-text">
+
+            <div class="err-login-failed " ng-show="$ctrl.loginFailed">
+                Invalid Username or Password.
+            </div>
+            <md-input-container class="md-block">
+                <label>Username / Email</label>
+                <input required name="username" ng-pattern="$ctrl.emailRegex" ng-model="$ctrl.loginValue.username">
+                <div ng-messages="loginForm.username.$error" role="alert">
+                    <div ng-message="required">Username is required.</div>
+                    <div ng-message="pattern">Invalid email format.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Password</label>
+                <input required name="password" type="password" ng-model="$ctrl.loginValue.password">
+                <div ng-messages="loginForm.password.$error" role="alert">
+                    <div ng-message="required">Password is required.</div>
+                </div>
+            </md-input-container>
+
+            <!--<md-checkbox class="md-primary" aria-label="checkbox" ng-model="$ctrl.rememberMe" ng-change="$ctrl.onChangeRememberMe();">
+                Remember me?
+            </md-checkbox>-->
+        </div>
+
+        <div class="buttons center" flex>
+            <md-button type="submit" ng-click="$ctrl.onLogin()" ng-disabled="loginForm.$invalid || $ctrl.loggingIn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Login</md-button>
+        </div>
+    </form>
+    <div class="mdl-card__actions"><small><a href="#!/forgot-password">Forgot password?</a></small></div>
+
+
+    <!--<div>
+        {{$ctrl.count}}
+
+        <button ng-click="$ctrl.startCount()">Start</button>
+        <button ng-click="$ctrl.stopAndResetCount()">Reset</button>
+
+    </div>-->
+</div>

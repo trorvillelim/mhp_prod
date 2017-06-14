@@ -1,0 +1,107 @@
+<div class="mdl-card mdl-shadow--2dp">
+    <div class="frame">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet">
+                <div class="cstm-on-mobile-padding-bottom-5" flex="90">
+                    <h4>BP Measurements</h4>
+                </div>
+                <patient-bp-measurement-chart bp-list="$ctrl.parent"></patient-bp-measurement-chart>
+            </div>
+            <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet">
+
+                <form name="bpMeasurementForm">
+                    <div class="" ng-show="!$ctrl.show_details">
+                        <!--<div class="buttons" flex>
+                            <md-button ng-click="$ctrl.createNewBpMeasurement()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Create New</md-button>
+                        </div>-->
+                          
+                        <div class="" layout="column" layout-gt-md="row">
+                            <div class="" flex>
+                                <md-input-container class="md-block">
+                                    <label>Search</label>
+                                    <input ng-model="$ctrl.search_value" name="search">
+                                </md-input-container>
+                            </div>
+                            
+                            <div class="" flex>
+                                <md-input-container class="md-block">
+                                    <label>Measurement status</label>
+                                    <md-select name="select" ng-model="$ctrl.statusId">
+                                        <md-option ng-value="{{}}">All</md-option>
+                                        <md-option ng-value="{{1}}">Resting</md-option>
+                                        <md-option ng-value="{{2}}">After exercise</md-option>
+                                        <md-option ng-value="{{3}}">Before exercise</md-option>
+                                        <md-option ng-value="{{4}}">Tired</md-option>
+                                        <md-option ng-value="{{5}}">Unwell</md-option>
+                                        <md-option ng-value="{{6}}">Excited</md-option>
+                                        <md-option ng-value="{{7}}">Surprised</md-option>
+                                        <md-option ng-value="{{8}}">Sad</md-option>
+                                        <md-option ng-value="{{9}}">Angry</md-option>
+                                        <md-option ng-value="{{10}}">In love</md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        
+                        <md-content class="">
+                            <md-table-container>
+                                <table md-table md-progress="$ctrl.get_bp_measurements">
+                                    <thead md-head md-order="$ctrl.query.order">
+                                        <tr md-row class="th">
+                                            <th md-column md-order-by="measurementDate_in_millis" style="padding-right: 120px">Date</th>
+                                            <th md-column md-order-by="location">Location</th>
+                                            <th md-column md-order-by="systolic">Systolic</th>
+                                            <th md-column md-order-by="diastolic">Diastolic</th>
+                                            <th md-column md-order-by="heartRate">Heart</th>
+                                            <th md-column md-order-by="device">Device</th>
+                                            <th md-column md-order-by="note" style="padding-right: 200px">Note</th>
+                                            <th md-column md-order-by="measurementStatusId">Status</th>
+                                            <!-- <th md-column>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody md-body>
+
+                                        <tr md-row ng-repeat="bp_measurement in $ctrl.bp_measurements |
+                                                orderBy: $ctrl.query.order|
+                                                filter:$ctrl.search_value | filter:{measurementStatusId:$ctrl.statusId}:true   |
+                                                limitTo: $ctrl.query.limit : ($ctrl.query.page -1) * $ctrl.query.limit"
+                                                ng-click="$ctrl.editBpMeasurement(bp_measurement.id)">
+                                            <td md-cell>{{bp_measurement.measureDate | date:'yyyy-MM-dd hh:mm a'}}</td>
+                                            <td md-cell>{{bp_measurement.location | location}}</td>
+                                            <td md-cell>{{bp_measurement.systolic}}</td>
+                                            <td md-cell>{{bp_measurement.diastolic}}</td>
+                                            <td md-cell>{{bp_measurement.heartRate}}</td>
+                                            <td md-cell>{{bp_measurement.device}}</td>
+                                            <td md-cell>{{bp_measurement.note}}</td>
+                                            <td md-cell>{{bp_measurement.measurementStatusId | MeasurementStatusDTO}}</td>
+                                            <!--
+                                            <td md-cell>
+                                                <span ng-click="$ctrl.deleteBpMeasurement(bp_measurement.id); $event.stopPropagation();" class="material-icons noselect">delete</span>
+                                            </td>
+                                            -->
+                                        </tr>
+                                        <tr ng-show="$ctrl.bp_measurements.length <= 0">
+                                            <td md-cell colspan="10">No Data for BP Measurements</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </md-table-container>
+                            <md-table-pagination md-limit="$ctrl.query.limit" md-limit-options="$ctrl.tableConfig.rowsPerPage" md-page="$ctrl.query.page"
+                                md-total="{{$ctrl.bp_measurements.length}}" md-page-select="true" md-boundary-links="true">
+                            </md-table-pagination>
+                        </md-content>
+                    </div>
+                </form>
+
+                <md-content ng-if="$ctrl.show_details">
+                    <patient-bp-measurement-details class="mdl-cell mdl-cell--8-col" 
+                        bp-measurement-to-view="$ctrl.bp_measurement_to_view"
+                        bp-measurement-to-view-copy="$ctrl.bp_measurement_to_view_copy"
+                        bp-measurements="$ctrl.bp_measurements"
+                        show-details="$ctrl.show_details">
+                    </patient-bp-measurement-details>
+                </md-content>
+            </div>
+        </div>
+    </div>
+</div>

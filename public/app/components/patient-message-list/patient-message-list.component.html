@@ -1,0 +1,62 @@
+<md-content>
+    <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+        <div layout-gt-sm="row">
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Search</label>
+                <input ng-model="$ctrl.search_value" name="search">
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+            <label>Request Type</label>
+            <md-select ng-model="$ctrl.filter_by_status">
+                <md-option value="">All</md-option>
+                <md-option value="New">New</md-option>
+                <md-option value="Acknowledged">Acknowledged</md-option>
+                <md-option value="Dismissed">Dismissed</md-option>
+            </md-select>
+            </md-input-container>
+        </div>    
+    </div>
+
+    <md-table-container>
+        <table class="tbl-read-only" md-table md-progress="$ctrl.query_promise" >
+            <thead md-head md-order="$ctrl.query.order">
+                <tr md-row>
+                    <th md-column md-order-by="subject" style=" width: 15%;">Subject</th>
+                    <th md-column md-order-by="description" style=" width: 30%;">Description</th>
+                    <th md-column md-order-by="response_type_label" style=" width: 10%;">Response Type</th>
+                    <th md-column md-order-by="eventDate" style=" width: 16%;" >Event Date</th>
+                    <th md-column md-order-by="deliverydDate" style=" width: 15%;" >Delivery Date</th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row ng-repeat="message in $ctrl.messages
+                                        | orderBy: $ctrl.query.order
+                                        | filter: {response_type_label : $ctrl.filter_by_status} 
+                                        | filter: $ctrl.search_value
+                                        | limitTo: $ctrl.query.limit : ($ctrl.query.page -1) * $ctrl.query.limit as filtered_messages_counter">
+                    <td md-cell>{{message.subject}}</td>
+                    <td md-cell>{{message.description}}</td>
+                    <td md-cell>{{message.response_type_label}}</td>
+                    <td md-cell>{{message.eventDate | date:'yyyy-MM-dd hh:mm: a'}}</td>
+                    <td md-cell>{{message.deliverydDate | date:'yyyy-MM-dd hh:mm: a'}}</td>
+                </tr>
+                <tr md-cell>
+                    <td md-cell colspan="5" ng-show="filtered_messages_counter.length <= 0 && $ctrl.search_processed">
+                        <span ng-show="$ctrl.isEmpty($ctrl.filter_by_status) && $ctrl.isEmpty($ctrl.search_value)">No data for messages.</span>
+                        <span ng-show="$ctrl.isEmpty($ctrl.filter_by_status) && !$ctrl.isEmpty($ctrl.search_value)">No data for messages with search keyword '{{$ctrl.search_value}}'.</span>
+                        <span ng-show="!$ctrl.isEmpty($ctrl.filter_by_status) && $ctrl.isEmpty($ctrl.search_value)">No data for {{$ctrl.filter_by_status}} messages.</span>
+                        <span ng-show="!$ctrl.isEmpty($ctrl.filter_by_status) && !$ctrl.isEmpty($ctrl.search_value)">No data for {{$ctrl.filter_by_status}} messages with search keyword '{{$ctrl.search_value}}'.</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <md-table-pagination 
+        md-limit="$ctrl.query.limit" 
+        md-limit-options="$ctrl.tableConfig.rowsPerPage" 
+        md-page="$ctrl.query.page"
+        md-total="{{($ctrl.messages | filter: {response_type_label : $ctrl.filter_by_status}  | filter: $ctrl.search_value ).length}}" 
+        md-page-select="true" 
+        md-boundary-links="true">
+    </md-table-pagination>
+</md-content>

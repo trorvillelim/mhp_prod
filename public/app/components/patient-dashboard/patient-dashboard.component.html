@@ -1,0 +1,143 @@
+<style>
+    md-content.md-default-theme, md-content {
+        background: transparent;
+    }
+
+    .no-data {
+        display: inline;
+        margin: auto;
+    }
+</style>
+<div class="mdl-card mdl-shadow--2dp">
+    <div class="frame">
+        <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet">
+                 <form name="dashboardForm">
+                <!--<md-tabs md-dynamic-height md-border-bottom >-->
+                    <!--<md-tab label="PATIENT REVIEW LOG CHART">-->
+                        <!--<md-content class="mdl-tabs__panel">-->
+                            <div layout="row" layout-align="space-between center">
+                                <div class="cstm-on-mobile-padding-bottom-5" flex="50">
+                                    <h4>Patient Review Log Chart</h4>
+                                </div>
+                                <div class="cstm-on-mobile-padding-bottom-5" flex="50">
+                                    <h5><strong> Total Time Spent : </strong>
+                                    <span id='number-default' >  {{$ctrl.totalTimeSpent}}  </span>
+                                    <span id='number-default' ng-if="$ctrl.totalTimeSpent == null " >  0  </span></h5>
+                                </div>
+                            </div>
+
+                            <!--<div layout="column" layout-align="space-between center">
+                                <div class="mdl-cell mdl-cell--12-col" >
+                                        <md-input-container class="md-block" >
+                                            <md-radio-group ng-model="$ctrl.logFilters" layout="row" layout-align="center center" ng-disabled="$ctrl.isRunning"
+                                            ng-init="$ctrl.logFilters = $ctrl.logFiltersList[2].id" >
+                                                <md-radio-button ng-repeat="filter in $ctrl.logFiltersList"  ng-value="{{filter.id}}" aria-label="{{filter.name}}">
+                                                    {{filter.name}}
+                                                </md-radio-button>
+                                            </md-radio-group>
+                                        </md-input-container>
+                                </div>
+
+                                <div class="mdl-cell mdl-cell--12-col" layout="row" layout-align="center center">
+                                    <md-input-container ng-if="$ctrl.enableDateRange" class="mdl-cell mdl-cell--4-col" >
+                                        <input date-range-picker
+                                                ng-model="$ctrl.selectedLogFilter.rangeDate"
+                                                name="rangeDate"
+                                                ng-pattern="$ctrl.dateRangeRegex"
+                                                type="text"
+                                                options="$ctrl.dateRangeOptions"
+                                                required
+                                                ng-keydown="$ctrl.onEnterKeyPress($event)"
+                                                style="text-align: center">
+                                    </md-input-container>
+
+                                    <!--<div ng-if="!$ctrl.enableDateRange">
+                                        <input type="button"  value="<" ng-click="$ctrl.getPrevLogs()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options">  </input>
+                                        <input type="button"  value="Today" ng-click="$ctrl.getSelectedOnChange()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options"> </input>
+                                        <input type="button"  value=">" ng-click="$ctrl.getNextLogs()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options">  </input>
+                                    </div>-->
+
+                                    <!--<section ng-if="!$ctrl.enableDateRange"  >
+                                            <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" ng-click="$ctrl.getPrevLogs()" ng-disabled="$ctrl.isRunning">Previous</md-button>
+                                            <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" ng-click="$ctrl.getSelectedOnChange()" ng-disabled="$ctrl.isRunning">Current</md-button>
+                                            <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" ng-click="$ctrl.getNextLogs()" ng-disabled="$ctrl.isRunning">Next</md-button>
+                                    </section>
+                                </div>
+                            </div>-->
+
+
+
+                        <div class="" layout-gt-md="row" layout="column" layout-align="start center" >
+                                <div class="cstm-on-mobile-padding-bottom-5" flex="33">
+                                    <md-radio-group 
+                                    class="cstm-radio-button-tight"
+                                    ng-model="$ctrl.logFilters"
+                                    layout="row" 
+                                    ng-disabled="$ctrl.isRunning"
+                                    ng-init="$ctrl.logFilters = $ctrl.logFiltersList[2].id" 
+                                    >
+                                        <md-radio-button ng-repeat="filter in $ctrl.logFiltersList"  ng-value="{{filter.id}}" aria-label="{{filter.name}}">
+                                            {{filter.name}}
+                                        </md-radio-button>
+                                    </md-radio-group>
+                                </div>
+
+                                <div class="cstm-on-mobile-padding-vertical-5" 
+                                    ng-if="($ctrl.logFilters != 3 && $ctrl.logFilters != 4)" 
+                                    layout-gt-md="row" 
+                                    layout-align="center center" 
+                                    flex="33">
+                                   <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" 
+                                        ng-click="$ctrl.getPrevLogs()" ng-disabled="$ctrl.isRunning"
+                                        ng-class="{ prevSelected : $ctrl.isPrevSelected == true}"
+                                        >Previous</md-button>
+                                    <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options"
+                                        ng-click="$ctrl.getSelectedOnChange()" ng-disabled="$ctrl.isRunning"   
+                                        ng-class="{ currentSelected : $ctrl.isCurrentSelected == true}"
+                                        >Current</md-button>
+                                    <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" 
+                                        ng-click="$ctrl.getNextLogs()" ng-disabled="$ctrl.isRunning || $ctrl.isCurrentSelected"
+                                        ng-class="{ nextSelected : $ctrl.isNextSelected == true}"                                
+                                        >Next</md-button>
+                                </div>
+                                <div class="cstm-on-mobile-padding-top-5" flex="33">
+                                        <md-input-container  class="md-block">
+                                        <label>Date Range</label>
+                                            <input date-range-picker
+                                                    ng-model="$ctrl.selectedLogFilter.rangeDate"
+                                                    name="rangeDate"
+                                                    ng-pattern="$ctrl.dateRangeRegex"
+                                                    type="text"
+                                                    options="$ctrl.dateRangeOptions"
+                                                    required
+                                                    ng-keydown="$ctrl.onEnterKeyPress($event)"
+                                                    class="cstm-read-only-text-min-width-200"
+                                                    ng-disabled="$ctrl.logFilters != 3" >
+                                        </md-input-container>
+                                    </div>
+                            </div>
+
+                            <md-divider></md-divider>
+                            <br>
+                            <h5 class="no-data" ng-if="$ctrl.reviewLogData.labels <= 0">**No Data Available for Review Logs**</h5>
+
+
+
+                            <!-- div work around for calendar date picker overlay issue-->
+                            <div style="min-height:300px">
+                                <canvas name="reviewLogChart" class="chart chart-bar" ng-if="$ctrl.reviewLogData.data.length > 0"
+                                    chart-series="$ctrl.reviewLogData.series"
+                                    chart-data="$ctrl.reviewLogData.data"
+                                    chart-labels="$ctrl.reviewLogData.labels"
+                                    chart-colors="$ctrl.reviewLogData.colours"
+                                    chart-options="$ctrl.reviewLogData.options"/>
+                            </div>
+                        <!--</md-content>-->
+                    <!--</md-tab>-->
+                <!--</md-tabs>-->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

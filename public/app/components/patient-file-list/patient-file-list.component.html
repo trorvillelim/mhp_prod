@@ -1,0 +1,98 @@
+<form name="form" >
+        <div class="frame">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--12-col" layout="row" layout-align="center center">
+                    <div class="mdl-cell mdl-cell--12-col" layout="column" layout-align="center center">
+                        <div class="mdl-cell mdl-cell--12-col" layout="row" layout-align="start center">
+                            <div class="mdl-cell mdl-cell--6-col">
+                                <md-input-container class="md-block">
+                                    <label>Search</label>
+                                    <input ng-model="$ctrl.query.search_value" name="search">
+                                </md-input-container>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col">
+                                <md-input-container class="md-block">
+                                    <label>Filter By </label>
+                                    <md-select ng-model="$ctrl.query.filter_type">
+                                        <md-option ng-value="filter"
+                                                   ng-repeat="filter in $ctrl.filter_by">{{ filter }}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col">
+                                <md-input-container class="md-block" ng-if="$ctrl.query.filter_type == 'Category'">
+                                    <label>Category</label>
+                                    <md-select ng-model="$ctrl.filter_category">
+                                        <md-option ng-value=""></md-option>
+                                        <md-option ng-value="category.value"
+                                                   ng-repeat="category in $ctrl.category_types">{{ category.label }}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container class="md-block" ng-if="$ctrl.query.filter_type == 'Date'">
+                                    <label>Date</label>
+                                    <input date-range-picker 
+                                            name="date" 
+                                            ng-pattern="$ctrl.dobRegex" 
+                                            type="text" 
+                                            ng-readonly="true"
+                                            ng-model="$ctrl.selected_date_range_value"
+                                           class="date-picker" options="$ctrl.date_range_picker_options">                                           
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--12-col">
+                            <md-table-container>
+                                <table md-table>
+                                    <thead md-head md-order="$ctrl.query.order">
+                                    <tr md-row>
+                                        <th md-column md-order-by="name">File Name</th>
+                                        <th md-column md-order-by="size">File size</th>
+                                        <th md-column md-order-by="category">Category</th>
+                                        <th md-column md-order-by="lastModifiedDate_in_millis">Upload Date</th>
+                                        <th md-column>Delete</th>
+                                        <th md-column>Download</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody md-body>
+                                        <tr md-row ng-repeat="file in $ctrl.files 
+                                                                | filter : $ctrl.query.search_value 
+                                                                | filter : ($ctrl.query.filter_type == 'Category'?$ctrl.filter_category:'')
+                                                                | mhpDateRangeFilter : ($ctrl.query.filter_type == 'Date') : $ctrl.filter_date + ' 00:00:00' : $ctrl.filter_date + ' 23:59:59' : 'lastModifiedDate'
+                                                                | orderBy: $ctrl.query.order 
+                                                                | limitTo: $ctrl.query.limit : ($ctrl.query.page -1) * $ctrl.query.limit as filtered_counter ">
+                                            <td md-cell> {{file.name}} </td>
+                                            <td md-cell> {{file.formatted_file_size}} </td>
+                                            <td md-cell> {{file.category}} </td>
+                                            <td md-cell> {{file.formatted_lastModifiedDate}}</td>
+                                            <td md-cell>
+                                                <i ng-click="$ctrl.onClickDeleteFile(file, $event)" class="material-icons">delete</i>
+                                            </td>
+                                            <td md-cell>
+                                                <a ng-href="{{file.preSignedURL}}" download target="_blank" class="material-icons">file_download</a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="filtered_counter.length <= 0">
+                                            <td md-cell colspan="10"> No files to download </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </md-table-container>
+                            <md-table-pagination 
+                                md-limit="$ctrl.query.limit" 
+                                md-limit-options="$ctrl.query.rowsPerPage" 
+                                md-page="$ctrl.query.page"
+                                md-total="{{($ctrl.files 
+                                            | filter : $ctrl.query.search_value 
+                                            | filter : ($ctrl.query.filter_type == 'Category'?$ctrl.filter_category:'')
+                                            | mhpDateRangeFilter : ($ctrl.query.filter_type == 'Date') : $ctrl.filter_date + ' 00:00:00' : $ctrl.filter_date + ' 23:59:59' : 'lastModifiedDate').length}}" 
+                                md-page-select="true" 
+                                md-boundary-links="true">
+                            </md-table-pagination>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>

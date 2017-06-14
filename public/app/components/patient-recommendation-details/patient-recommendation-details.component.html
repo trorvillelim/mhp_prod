@@ -1,0 +1,42 @@
+<form name="recommendationDetailsForm">
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <!--<md-input-container class="md-block">
+                    <md-datepicker ng-model="$ctrl.recommendationToView.recDate" name="recDate" md-placeholder="Date">
+                    </md-datepicker>
+                </md-input-container>-->
+                <md-input-container class="md-block hide-time">
+                    <label>Recommendation Date</label>
+                    <input date-range-picker name="recDate" ng-pattern="$ctrl.recDateRegex"
+                           type="text" ng-model="$ctrl.recommendationToView.recDate"
+                           options="{singleDatePicker:true, timePicker:true,  locale:{format:'YYYY-MM-DD hh:mm a'}}" min="$ctrl.currentDate"required="">
+                    <div ng-messages="recommendationDetailsForm.recDate.$error" role="alert" ng-show="recommendationDetailsForm.recDate.$touched" >
+                        <div ng-message="required">Recommendation Date is required.</div>
+                        <div ng-message="pattern">Invalid Recommendation Date.</div>
+                    </div>
+                    <!--<adm-dtp  ng-model='$ctrl.recommendationToView.recDate' options="{multiple : false, format: 'YYYY-MM-DD', autoClose : true}"> -->
+                        <!--<div class="input-group date"> -->
+                            <!--<input required type='text' name="recDate" ng-model='$ctrl.recommendationToView.recDate' dtp-input class="form-control input-sm"  autocomplete="off"/>-->
+                        <!--</div>-->
+                        <!--<span dtp-toggle class="material-icons noselect date-icon">date_range</span>-->
+                    <!--</adm-dtp>-->
+                </md-input-container>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <md-input-container class="md-block">
+                    <label>Text</label>
+                    <input required ng-model="$ctrl.recommendationToView.recText" name="recText" type="text"  ng-maxlength="250">
+                    <div ng-messages="recommendationDetailsForm.recText.$error || recommendationDetailsForm.recText.$valid" role="alert" ng-show="recommendationDetailsForm.recText.$touched">
+                        <div ng-message="required">Text is required.</div>
+                        <div ng-message="maxlength">Character limit is 250.</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </div>
+    </div>
+    <div class="buttons">
+        <md-button type="reset" ng-click="$ctrl.cancel()"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Cancel</md-button>
+        <md-button type="submit" ng-click="$ctrl.submit()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"  ng-disabled="recommendationDetailsForm.$invalid" >Save</md-button>
+    </div>
+</form>

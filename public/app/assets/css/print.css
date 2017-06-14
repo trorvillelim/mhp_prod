@@ -1,0 +1,12 @@
+@media only print {
+  .mdl-layout__drawer,
+  section.ribbon,
+  section.content .frame .table-controls,
+  .btn-export,
+  .mdl-layout__drawer-button,
+  .table-footer-controls {
+    display: none; }
+  main {
+    margin-left: 0 !important; }
+  section.content {
+    margin-top: 0; } }

@@ -1,0 +1,31 @@
+<style>
+/* workaround for mdl side panel*/
+.mdl-cstm-without-side-panel > .mdl-layout__drawer-button{
+    display: none;
+}
+</style>
+
+<div class="" ng-show="$ctrl.debug">
+    <debug-container></debug-container>
+</div>
+
+<div class="mdl-layout__container">
+    <div class="mdl-layout mdl-js-layout" ng-class="$ctrl.withSidePanel? '' : 'mdl-cstm-without-side-panel'">
+        <header ng-show="$ctrl.withSidePanel" >
+            <div class="mdl-layout__header-row">
+            <div class="mdl-layout-spacer"></div>
+                <span class="mdl-layout-title">
+                    <img src="assets/images/logo.png" ng-click="$ctrl.onClickLogo()"  style="cursor:initial;">
+                </span>
+            <div class="mdl-layout-spacer"></div>
+            </div>
+        </header>          
+        <app-nav ng-show="$ctrl.withSidePanel" class="mdl-layout__drawer"></app-nav>
+        <main class="mdl-layout__content">
+            <section class="ribbon">
+            </section>
+            <section ng-class="$ctrl.withSidePanel? 'content' : ''" ng-transclude>
+            </section>
+        </main>
+    </div>
+</div>

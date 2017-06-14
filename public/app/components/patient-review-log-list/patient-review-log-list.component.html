@@ -1,0 +1,158 @@
+<form name="timeLogForm" ng-show="!$ctrl.show_details">
+
+    <div layout="row" layout-align="end center">
+        <div class="cstm-on-mobile-padding-top-5"  ng-show="!$ctrl.addTimeLog && $ctrl.isManual">
+            <div class="buttons" >
+                <md-button  ng-click="$ctrl.focus? $ctrl.onAddTimeLog($event) :''" ng-focus="$ctrl.focus=true"
+                            ng-blur="$ctrl.focus=true"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Create New</md-button>
+            </div>
+        </div>
+
+        <div class="cstm-on-mobile-padding-top-5">
+            <div class="buttons">
+                <md-button 
+                    ng-click="$ctrl.exportPDF(true)" 
+                    ng-disabled="$ctrl.processing_getLogsByPatientId || $ctrl.processing_upload_report || $ctrl.processing_download_report" 
+                    type="button"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"> {{$ctrl.processing_download_report?'Building PDF..':'Export PDF'}} </md-button> 
+            </div>                         
+        </div>
+        <div class="cstm-on-mobile-padding-top-5">
+            <div class="buttons">
+                <md-button 
+                    ng-click="$ctrl.exportPDF(false)" 
+                    ng-disabled="$ctrl.processing_getLogsByPatientId || $ctrl.processing_upload_report || $ctrl.processing_download_report" 
+                    type="button"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"> {{$ctrl.processing_upload_report?'Uploading..':'Upload Records'}} </md-button> 
+            </div>                         
+        </div>        
+    </div>
+    <div layout="row" layout-align="start end">
+        <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col-desktop">
+            <md-input-container class="md-block">
+                <label>Search</label>
+                <input ng-model="$ctrl.search_value" name="search">
+            </md-input-container>
+        </div>
+
+        <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col-desktop">
+            <h6> 
+                <strong> Total Time Spent : </strong> 
+                <span id='number-default'>  {{$ctrl.totalTimeSpent}}  </span>
+                <span id='number-default' ng-if="$ctrl.totalTimeSpent == null " >  0  </span>
+            </h6>
+        </div>                  
+    </div>
+<div class="" layout-gt-md="row" layout="column" layout-align="start center" >
+    <div class="cstm-on-mobile-padding-bottom-5" flex="33">
+        <md-radio-group 
+            class="cstm-radio-button-tight"
+            ng-model="$ctrl.logFilters"
+            layout="row"                              
+            ng-disabled="$ctrl.processing_getLogsByPatientId"
+            ng-init="$ctrl.logFilters = $ctrl.logFiltersList[2].id"
+            ng-change="$ctrl.getSelectedOnChange()">
+
+            <md-radio-button 
+                ng-repeat="filter in $ctrl.logFiltersList"
+                ng-value="{{filter.id}}"
+                aria-label="{{filter.name}}">
+                {{filter.name}}
+            </md-radio-button>
+        </md-radio-group>
+    </div>
+
+    <div class="cstm-on-mobile-padding-vertical-5" 
+        ng-if="($ctrl.logFilters != 3 && $ctrl.logFilters != 4)" 
+        layout-gt-md="row" 
+        layout-align="center center" 
+        flex="33">
+        <!--<md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" ng-click="$ctrl.getPrevLogs()"  >Previous</md-button>
+        <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" ng-click="$ctrl.getSelectedOnChange()" >Current</md-button>
+        <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" ng-click="$ctrl.getNextLogs()" >Next</md-button>-->
+       
+       
+        <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" 
+            ng-click="$ctrl.getPrevLogs()" ng-disabled="$ctrl.processing_getLogsByPatientId"
+            ng-class="{ prevSelected : $ctrl.isPrevSelected == true}"
+            >Previous</md-button>
+        <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options"
+            ng-click="$ctrl.getSelectedOnChange()" ng-disabled="$ctrl.processing_getLogsByPatientId"   
+            ng-class="{ currentSelected : $ctrl.isCurrentSelected == true}"
+            >Current</md-button>
+        <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" 
+            ng-click="$ctrl.getNextLogs()" ng-disabled="$ctrl.processing_getLogsByPatientId || $ctrl.isCurrentSelected"
+            ng-class="{ nextSelected : $ctrl.isNextSelected == true}"                                
+            >Next</md-button>            
+    </div>
+    <div class="cstm-on-mobile-padding-top-5" flex="33">
+            <md-input-container  class="md-block">
+            <label>Date Range</label>
+                <input date-range-picker
+                        ng-model="$ctrl.selectedLogFilter.rangeDate"
+                        name="rangeDate"
+                        ng-pattern="$ctrl.dateRangeRegex"
+                        type="text"
+                        max="$ctrl.curr"
+                        options="$ctrl.dateRangeOptions"
+                        required
+                        ng-keydown="$ctrl.onEnterKeyPress($event)"
+                        class="cstm-read-only-text-min-width-200"
+                        ng-disabled="$ctrl.logFilters != 3" >
+            </md-input-container>
+    </div>
+   
+</div>
+
+    <md-content class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet">
+        <md-table-container>
+            <table md-table md-progress="$ctrl.post_patient_logs" id="patientLogs">
+                <thead md-head md-order="$ctrl.query.order">
+                    <tr md-row>
+                        <!--<th md-column md-order-by="totalDuration">Duration</th>-->
+                        <th md-column md-order-by="total_duration_in_seconds">Time Spent</th>
+                        <th md-column md-order-by="latestDateTimeReviewed_in_millis">Date/Time Logged</th>
+                        <th md-column md-order-by="pageReviewed">Section</th>
+                        <th md-column md-order-by="Note" ng-show="$ctrl.isManual">Comment</th>
+                        <th md-column ng-show="$ctrl.isManual"></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row ng-repeat="patient in $ctrl.patients
+                                          | orderBy: $ctrl.query.order
+                                          | limitTo: $ctrl.query.limit : ($ctrl.query.page -1) * $ctrl.query.limit
+                                          | filter:$ctrl.search_value track by $index"
+                                          ng-click="$ctrl.showEdit(patient.id)"
+                                          ng-class="{ nonEditableRow : $ctrl.isManual != true}">
+                        <!--<td md-cell>{{patient.totalDuration}}</td>-->
+                        <td md-cell>{{patient.formatted_total_duration_in_minutes}}</td>
+                        <td md-cell>{{patient.latestDateTimeReviewed | date:'yyyy-MM-dd hh:mm a'}}</td>
+                        <td md-cell>{{patient.pageReviewed}}</td>
+                        <td md-cell ng-show="$ctrl.isManual">{{patient.Note}}</td>                    
+                        <td md-cell ng-show="$ctrl.isManual">
+                            <div ng-click="$ctrl.deleteTimeLog(patient.id, patient.pageReviewed ,$event); $event.stopPropagation();"><i class="material-icons">delete</i></div>
+                        </td>
+                    </tr>
+                    <tr ng-show="$ctrl.patients.length <= 0 && !$ctrl.processing_getLogsByPatientId">
+                        <td md-cell colspan="10">No Data for patients</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination md-limit="$ctrl.query.limit" md-limit-options="$ctrl.tableConfig.rowsPerPage" md-page="$ctrl.query.page"
+            md-total="{{$ctrl.patients.length}}" md-page-select="true" md-boundary-links="true">
+        </md-table-pagination>
+    </md-content>
+</form>
+
+<div ng-if="$ctrl.show_details">
+    <patient-review-log-details show-details="$ctrl.show_details" 
+        data="$ctrl.data" 
+        patients="$ctrl.patients" 
+        log-value="$ctrl.logValue" 
+        page-reviewed-list="$ctrl.pageReviewedList"
+        is-manual="$ctrl.is_manual"
+        time-logs-to-view-copy="$ctrl.time_logs_to_view_copy">
+    </patient-review-log-details>
+</div>

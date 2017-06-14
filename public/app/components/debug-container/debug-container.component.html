@@ -1,0 +1,14 @@
+<div layout="row" ng-show="$ctrl.debug_status.is_debug_mode">
+    <div layout="row" flex>
+        <div>
+            <md-switch ng-model="$ctrl.direct_api_access" aria-label="Direct API Access" ng-change="$ctrl.onChangeDirectAPIAccess()">
+                Direct API Access
+            </md-switch>
+        </div>
+    </div>
+    <div layout="row" layout-align="end center" flex>
+        <div>
+           <md-button class="md-warn" ng-click="$ctrl.onClickClose()">Close</md-button>
+        </div>
+    </div>    
+</div>

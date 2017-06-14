@@ -1,0 +1,71 @@
+<!--<div class="mdl-card mdl-shadow--2dp">
+    <div class="frame">
+        <div class="mdl-grid">
+
+            <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--12-col-desktop">-->
+                <br>
+                <div class="mdl-cell--8-col mdl-cell--12-col-tablet">
+                    <md-input-container class="md-block"  >
+                        <label> Type the medications or medical notes here</label>
+                        <textarea ng-model="$ctrl.usageInstruction"
+                                  rows="" md-select-on-focus
+                                  ng-trim="false"> </textarea>
+
+                    </md-input-container>
+                    <div class="buttons">
+                         <button ng-click="$ctrl.cancelText()"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                formnovalidate >Cancel
+                        </button>
+                        <button ng-click="$ctrl.addMedication()"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                formnovalidate ng-disabled="!$ctrl.usageInstruction.trim()">{{$ctrl.buttonName}}
+                        </button>
+                    </div>
+                </div>
+                <br>
+                
+                <md-divider> </md-divider>
+            </div>
+
+            <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                <br>
+                <md-table-container>
+                    <table md-table md-progress="$ctrl.get_patiendDrugs">
+                        <thead md-head md-order="$ctrl.query.order">
+                        <tr md-row>
+                            <th md-column md-order-by="effectiveDate" style="width: 200px">Date</th>
+                            <th md-column md-order-by="usageInstruction">Medications and Notes</th>
+                             <th md-column>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th> 
+                        </tr>
+                        </thead>
+                        <tbody md-body>
+
+                           
+
+                        <tr md-row ng-repeat="medication in $ctrl.medication_list | orderBy: $ctrl.query.order
+                        | limitTo: $ctrl.query.limit : ($ctrl.query.page -1) * $ctrl.query.limit as filtered_counter" ng-click="$ctrl.edit(medication)">
+                            <td md-cell>{{medication.effectiveDate | date:'yyyy-MM-dd hh:mm a'}}</td>
+                            <td md-cell>{{medication.usageInstruction}}</td>
+                            <td md-cell >
+                                <div ng-click="$ctrl.deleteMedication(medication, $event); $event.stopPropagation();"><i class="material-icons">delete</i></div>
+                            </td>
+                        </tr>
+
+                        <!--<tr ng-show="$ctrl.recommendation.length <= 0">-->
+                        <!--<td md-cell colspan="10">No Data for Recommendations</td>-->
+                        <!--</tr>-->
+                        </tbody>
+                    </table>
+                </md-table-container>
+                <md-table-pagination 
+                            md-limit="$ctrl.query.limit"
+                            md-limit-options="$ctrl.tableConfig.rowsPerPage" 
+                            md-page="$ctrl.query.page" 
+                            md-total="{{($ctrl.medication_list).length}}"
+                            md-page-select="true" md-boundary-links="true">
+                        </md-table-pagination>
+            <!--</div>
+        </div>
+    </div>
+</div>-->

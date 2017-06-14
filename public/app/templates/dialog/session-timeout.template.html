@@ -1,0 +1,14 @@
+<md-dialog aria-label="session-timeout-dialog-template">
+    <div ng-show="!signing_out" class="mdl-card__supporting-text">
+        <h3>The session has been idle for {{time}} minutes.</h3>
+        <h4>You will be logged off automatically in {{countdown}} seconds.</h4>
+       
+        <div class="buttons center" flex>
+            <md-button class="md-raised md-primary" ng-click="continue()">Remain Connected</md-button>
+            <md-button class="md-raised md-warn" ng-click="logout()">Disconnect Now</md-button>
+        </div>
+    </div>
+    <div ng-show="signing_out">
+        <h1>Signing out....</h1>
+    </div>
+</md-dialog>

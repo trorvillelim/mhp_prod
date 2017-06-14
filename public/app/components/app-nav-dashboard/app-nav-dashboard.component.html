@@ -1,0 +1,39 @@
+
+  <nav class="mdl-navigation">
+    <div class="side-nav-search-input">
+        <form name="sideNavPatientSearchForm" ng-submit="$ctrl.searchPatient();">
+            <md-input-container class="md-block">
+                <label>Search Patient</label>
+                <input name="sideNavPatientSearch" ng-model="$ctrl.patient">
+                </div>            
+            </md-input-container>
+        </form>
+    </div>
+    <span data-badge="{{$ctrl.notifications.monitored}}" ng-class="$ctrl.notifications.monitored > 0?'mdl-badge':''">
+      <a class="mdl-navigation__link {{'#!/patient-list/monitored' | isLocationActive }}" href="#!/patient-list/monitored">
+        <strong>Enrolled</strong>
+      </a>
+    </span>
+    <span data-badge="{{$ctrl.notifications.required_attention}}" ng-class="$ctrl.notifications.required_attention > 0?'mdl-badge':''">
+      <a class="mdl-navigation__link {{'#!/patient-list/attention' | isLocationActive }}" href="#!/patient-list/attention">
+        <strong>Requiring Attention</strong>
+      </a>
+    </span>
+    <span data-badge="{{$ctrl.notifications.under_control}}" ng-class="$ctrl.notifications.under_control > 0?'mdl-badge':''">
+      <a class="mdl-navigation__link {{'#!/patient-list/under_control' | isLocationActive }}" href="#!/patient-list/under_control">
+        <strong>On Target</strong>
+      </a>
+    </span>
+    <span data-badge="{{$ctrl.notifications.have_not_looked}}" ng-class="$ctrl.notifications.have_not_looked > 0?'mdl-badge':''">
+      <a class="mdl-navigation__link {{'#!/patient-list/have_not_looked' | isLocationActive }}" href="#!/patient-list/have_not_looked">
+        <strong>Not Reviewed in 20+ Days</strong>
+      </a>
+    </span>
+    <span data-badge="{{$ctrl.notifications.no_data_for_days}}" ng-class="$ctrl.notifications.no_data_for_days > 0?'mdl-badge':''">
+      <a class="mdl-navigation__link {{'#!/patient-list/no_data_for_days' | isLocationActive }}" href="#!/patient-list/no_data_for_days">
+        <strong>No Data in 7 Days</strong>
+      </a>
+    </span>    
+    <hr>
+    <a class="mdl-navigation__link {{'#!/review-logs' | isLocationActive }}" href="#!/review-logs">Review Log Reports</a>
+  </nav>

@@ -1,0 +1,11 @@
+{
+    "status": "200",
+    "message": "WORKING!",
+    "SERVER": "mhp.cl4cjyhmdurv.us-east-1.rds.amazonaws.com",
+    "DATABASE": "mHPCntx",
+    "APP_ARN": "arn:aws:sns:us-east-1:375162590464:app/APNS/mhp-ws-sns",
+    "REGION": "us-east-1",
+    "PORT": "9000",
+    "DURATION": "30",
+    "URL": "http://dev.mhealthpharma.com"
+}

@@ -1,0 +1,92 @@
+<div class="mdl-card mdl-shadow--2dp">
+    <div class="frame">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--12-col-phone mhp-profile-column" ng-class="$ctrl.screenWidth < 1280?'mdl-cell--4-col':'mdl-cell--3-col'">
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-cell--6-col-phone">
+                        <div class="mhp-card--img mdl-card" style="background: url('https://tracker.moodle.org/secure/attachment/30912/f3.png') center / cover">
+                            <div class="mdl-card__title mdl-card--expand"></div>
+                            <!--<div class="mdl-card__actions"><span class="mhp-card--img__filename">{{$ctrl.patient_details.formalName}}</span></div>-->
+                            <div class="mdl-card__actions"><span class="mhp-card--img__filename">{{$ctrl.patientFullName}}</span></div>
+                            <!--<div class="mdl-card__menu">
+                                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"><i class="material-icons">camera_alt</i></button>
+                            </div>-->
+                        </div> <br>
+                        <nav>
+                            <p class="{{'#!/patient/messages_new' | isLocationActive }}" ng-click="$ctrl.updateView('messages_new')">
+                                <a class="mdl-navigation__link"
+                                    data-badge="{{$ctrl.messages_count.new_messages}}"  
+                                    ng-class="$ctrl.messages_count.new_messages > 0?'mdl-badge':''">
+                                        New Messages
+                                </a>
+                            </p>
+                            <p class="{{'#!/patient/messages_acknowledged' | isLocationActive }}" ng-click="$ctrl.updateView('messages_acknowledged')">
+                                <a class="mdl-navigation__link"
+                                    data-badge="{{$ctrl.messages_count.acknowledged_messages}}"  
+                                    ng-class="$ctrl.messages_count.acknowledged_messages > 0?'mdl-badge':''">
+                                        Acknowledged Messages
+                                </a>
+                            </p>
+                            <p class="{{'#!/patient/messages_dismissed' | isLocationActive }}" ng-click="$ctrl.updateView('messages_dismissed')">
+                                    <a class="mdl-navigation__link"
+                                        data-badge="{{$ctrl.messages_count.dismissed_messages}}" 
+                                        ng-class="$ctrl.messages_count.dismissed_messages > 0?'mdl-badge':''">
+                                            Dismissed Messages
+                                    </a>
+                            </p>               
+                        </nav>         
+                        <hr class="mdl-cell--hide-tablet">
+                    </div>
+                    <div class="mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-cell--6-col-phone">
+                        <nav>
+                            <p class="{{'#!/patient/dashboard' | isLocationActive }}" ng-click="$ctrl.updateView('dashboard')">
+                                <a class="mdl-navigation__link" >Patient Charts</a>
+                            </p>
+                            <p class="{{'#!/patient/profile' | isLocationActive }}" ng-click="$ctrl.updateView('profile')">
+                                <a class="mdl-navigation__link" >Profile</a>
+                            </p>
+                            <p class="{{'#!/patient/recommendation' | isLocationActive }}" ng-click="$ctrl.updateView('recommendation')">
+                                <a class="mdl-navigation__link" >Recommendations</a>
+                            </p>
+                            <p class="{{'#!/patient/notification' | isLocationActive }}" ng-click="$ctrl.updateView('notification')">
+                                <a class="mdl-navigation__link" >Notifications</a>
+                            </p>
+                            <p class="{{'#!/patient/bp_measurements' | isLocationActive }}" ng-click="$ctrl.updateView('bp_measurements')">
+                                <a class="mdl-navigation__link" >BP Measurements</a>
+                            </p>
+                            <p class="{{'#!/patient/patient_file_container' | isLocationActive }}" ng-click="$ctrl.updateView('patient_file_container')">
+                                <a class="mdl-navigation__link" >Patient Files</a>
+                            </p>
+                            <p class="{{'#!/patient/patient-medication-container' | isLocationActive }}" ng-click="$ctrl.updateView('patient-medication-container')">
+                                <a class="mdl-navigation__link" >Medications and Notes</a>
+                            </p>
+
+                            <p class="{{'#!/patient/patient_review_log' | isLocationActive }}" ng-click="$ctrl.updateView('patient_review_log')">
+                                <a class="mdl-navigation__link" >Patient Review Log Details</a>
+                            </p>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mdl-cell "  ng-class="$ctrl.screenWidth < 1280?'mdl-cell--8-col':'mdl-cell--9-col'" >
+                <patient-message-list 
+                    initial-status="$ctrl.message_view_type" 
+                    ng-show="$ctrl.view === 'messages_new' 
+                             || $ctrl.view === 'messages_acknowledged' 
+                             || $ctrl.view === 'messages_dismissed'" ng-cloak>
+                </patient-message-list>
+                <patient-dashboard ng-show="$ctrl.view === 'dashboard'" ng-cloak></patient-dashboard>
+                <patient-profile ng-show="$ctrl.view === 'profile'" patient-details="$ctrl.patient_details" ng-cloak></patient-profile>
+                <patient-recommendation-list ng-show="$ctrl.view === 'recommendation'" ng-cloak></patient-recommendation-list>
+                <patient-notification-bases-list ng-show="$ctrl.view === 'notification'" ng-cloak></patient-notification-bases-list>
+                <patient-bp-measurement-list ng-show="$ctrl.view === 'bp_measurements'" ng-cloak></patient-bp-measurement-list>
+                <patient-medication-container ng-show="$ctrl.view === 'patient-medication-container'" ng-cloak> </patient-medication-container>
+                <patient-review-log-container ng-show="$ctrl.view === 'patient_review_log'" ng-cloak></patient-review-log-container>
+                <patient-file-container ng-show="$ctrl.view === 'patient_file_container'" ng-cloak> </patient-file-container>
+            </div>
+
+        </div>
+    </div>
+</div>

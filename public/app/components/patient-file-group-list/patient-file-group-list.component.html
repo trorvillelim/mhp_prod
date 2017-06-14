@@ -1,0 +1,74 @@
+<div class="mdl-card mdl-shadow--2dp">
+    <div class="frame">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col" layout="row" layout-align="center center">
+                <div class="mdl-cell mdl-cell--12-col" layout="column" layout-align="center center">
+                    <label> Download File </label>
+                    <div class="mdl-cell mdl-cell--12-col" ng-show="$ctrl.filesUpdateInProgress">
+                          <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+                    </div>                    
+                    <div class="mdl-cell mdl-cell--12-col" ng-hide="$ctrl.filesUpdateInProgress">
+
+                        <div class="mdl-cell mdl-cell--6-col" ng-show="$ctrl.groupedFiles.length > 0">
+                            <md-input-container class="md-block">
+                                <label>Search</label>
+                                <input ng-model="$ctrl.queryGroupedFiles.filter" name="search">
+                            </md-input-container>
+                        </div>                        
+
+                        <div ng-hide="filter_counter.length <= 0">
+                            <md-expansion-panel 
+                                        class="cstm-margin-bottom-10"
+                                        md-component-id="file_group.id" 
+                                        ng-repeat="file_group in $ctrl.groupedFiles 
+                                                   | orderBy : $ctrl.queryGroupedFiles.order 
+                                                   | filter : $ctrl.queryGroupedFiles.filter as filter_counter">
+
+                                <md-expansion-panel-collapsed layout="row" ng-click="$panel.expand()">
+                                    <div flex="90">
+                                        {{file_group.name}}
+                                    </div>
+                                    <div flex="10" layout="row" layout-align="end center">
+                                        <!--<md-expansion-panel-icon></md-expansion-panel-icon>-->
+                                        <i class="material-icons">add</i>                                        
+                                    </div>
+
+                                </md-expansion-panel-collapsed>
+                                <md-expansion-panel-expanded>
+
+                                    <md-expansion-panel-header layout="row" ng-click="$panel.collapse()">
+                                        <div flex="90">
+                                            {{file_group.name}}
+                                        </div>
+                                        <div flex="10" layout="row" layout-align="end center">
+                                            <!--<md-expansion-panel-icon></md-expansion-panel-icon>-->
+                                            <i class="material-icons">remove</i> 
+                                        </div>
+                                    </md-expansion-panel-header>
+                                    <md-expansion-panel-content>
+                                        <patient-file-list 
+                                                patient-file-global-functions="$ctrl.patientFileGlobalFunctions" 
+                                                patient-user-id="$ctrl.patient_user_id" 
+                                                files="file_group.files">
+                                        </patient-file-list>
+                                    </md-expansion-panel-content>
+
+                                </md-expansion-panel-expanded>
+                            </md-expansion-panel>  
+                        </div>
+
+                         <div ng-show="filter_counter.length <= 0 && !$ctrl.filesUpdateInProgress">
+                             <div ng-show="$ctrl.groupedFiles.length > 0">
+                                File not found
+                             </div>
+                            <div ng-show="$ctrl.groupedFiles.length <= 0">
+                                Patient has no file
+                            </div>
+                         </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

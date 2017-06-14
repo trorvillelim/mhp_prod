@@ -1,0 +1,38 @@
+{
+  "name": "mhpui",
+  "main": "index.js",
+  "description": " ",
+  "version": "1.0.0",
+  "private": true,
+  "authors": [
+    "Ma. Suzette Dimalanta <suzette.dimalanta@tooltwist.com>"
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "dependencies": {
+    "angular": "1.5.7",
+    "angular-route": "1.5.7",
+    "angular-messages": "1.5.7",
+    "angular-animate": "1.5.7",
+    "angular-aria": "1.5.7",
+    "angular-material": "1.1.1",
+    "getmdl-select": "*",
+    "angular-material-data-table": "0.10.9",
+    "angular-cookies": "1.5.8",
+    "angular-chart.js": "1.0.3",
+    "underscore": "1.8.3",
+    "adm-dtp": "*",
+    "moment": "2.17.1",
+    "angular-idle-service": "1.0.4",
+    "angular-daterangepicker": "0.2.2",
+    "ng-file-upload": "12.2.13",
+    "ng-idle": "1.3.2",
+    "pdfmake": "0.1.25",
+    "angular-local-storage": "0.5.2",
+    "angular-material-expansion-panel": "0.7.2"
+  },
+  "resolutions": {
+    "angular": "1.5.7"
+  }
+}

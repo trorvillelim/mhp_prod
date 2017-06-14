@@ -1,0 +1,55 @@
+[{
+	"id": 1,
+	"date": "2017-01-07",
+	"text": "Sample Text 1",
+	"status": 0,
+	"createdDate": "2016-01-31",
+	"createdBy": "Kevin",
+	"lastModifiedDate": "2017-03-31",
+	"lastModifiedBy": "Kevin"
+}, {
+	"id": 2,
+	"date": "2017-02-07",
+	"text": "Sample Text 2",
+	"status": 1,
+	"createdDate": "2016-03-31",
+	"createdBy": "Jejomar",
+	"lastModifiedDate": "2017-02-31",
+	"lastModifiedBy": "Jejomar"
+}, {
+	"id": 3,
+	"date": "2017-03-07",
+	"text": "Sample Text 3",
+	"status": 1,
+	"createdDate": "2016-03-31",
+	"createdBy": "Jay",
+	"lastModifiedDate": "2017-03-31",
+	"lastModifiedBy": "Jay"
+}, {
+	"id": 4,
+	"date": "2017-04-07",
+	"text": "Sample Text 4",
+	"status": 2,
+	"createdDate": "2016-04-31",
+	"createdBy": "Suzie",
+	"lastModifiedDate": "2017-03-31",
+	"lastModifiedBy": "Suzie"
+}, {
+	"id": 5,
+	"date": "2017-05-07",
+	"text": "Sample Text 5",
+	"status": 0,
+	"createdDate": "2016-05-31",
+	"createdBy": "Jennifer",
+	"lastModifiedDate": "2017-03-31",
+	"lastModifiedBy": "Jennifer"
+}, {
+	"id": 6,
+	"date": "2017-06-07",
+	"text": "Sample Text 6",
+	"status": 0,
+	"createdDate": "2016-06-31",
+	"createdBy": "Chew",
+	"lastModifiedDate": "2017-06-31",
+	"lastModifiedBy": "Chew"
+}]

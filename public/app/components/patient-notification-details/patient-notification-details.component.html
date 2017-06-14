@@ -1,0 +1,129 @@
+<form name="notificationDetailsForm">
+    <div class="mdl-grid">
+
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Event Date</label>
+                    <input date-range-picker
+                           name="eventDate"
+                           ng-pattern="$ctrl.dateRegex"
+                           type="text"
+                           ng-model="$ctrl.notificationToView.eventDate"
+                           options="{singleDatePicker: true, timePicker:true,  locale:{format:'YYYY-MM-DD hh:mm a'}}"
+                           min="$ctrl.currentDate"
+                           required>
+                    <div ng-messages="notificationDetailsForm.eventDate.$error" role="alert" ng-show="notificationDetailsForm.eventDate.$touched">
+                        <div ng-message="required">Event Date is required.</div>
+                        <div ng-message="pattern">Invalid Date.</div>
+                    </div>
+            </md-input-container>
+
+            <!--<md-input-container class="md-block">
+                <md-datepicker name="eventDate" ng-model="$ctrl.notificationToView.eventDate" md-placeholder="Event Date"></md-datepicker>
+            </md-input-container>-->
+
+            <!--<md-input-container class="md-block">-->
+                <!--<label>Event Date</label>-->
+                <!--<pre>{{datePicker.singleDate}} </pre>-->
+                <!--<adm-dtp ng-model='$ctrl.notificationToView.eventDate' options="{multiple : false, autoClose : true, format: 'YYYY-MM-DD hh:mm'}">-->
+                    <!--<div class="input-group date">-->
+                        <!--<input type='text' name="eventDate" ng-model='$ctrl.notificationToView.eventDate' dtp-input class="form-control input-sm"  />-->
+                    <!--</div>-->
+                    <!--<span dtp-toggle class="material-icons noselect date-icon">date_range</span>-->
+                <!--</adm-dtp>-->
+            <!--</md-input-container>-->
+        </div>
+
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block ">
+                <label>Delivery Date</label>
+                <input date-range-picker name="deliverydDate"
+                       id="deliverydDate"
+                       ng-pattern="$ctrl.dateRegex"
+                       type="text"
+                       ng-model="$ctrl.notificationToView.deliverydDate"
+                       options="{singleDatePicker: true, timePicker:true,  locale:{format:'YYYY-MM-DD hh:mm a'}}"                      
+                       min="$ctrl.notificationToView.eventDate"
+                       ng-change="$ctrl.checkErr($ctrl.notificationToView.eventDate,$ctrl.notificationToView.deliverydDate)"
+                       required>
+                <div ng-messages="notificationDetailsForm.deliverydDate.$error" role="alert" ng-show="notificationDetailsForm.deliverydDate.$touched">
+                    <div ng-message="required">Delivery Date is required.</div>
+                    <div ng-message="pattern">Invalid Date.</div>
+                    <div ng-message="validationErrMessage"  >{{$ctrl.errMessage}}</div>
+                </div>
+            </md-input-container>
+
+            <!--<md-input-container class="md-block">
+                <md-datepicker name="deliverydDate" ng-model="$ctrl.notificationToView.deliverydDate" md-placeholder="Delivery Date"></md-datepicker>
+            </md-input-container>-->
+
+            <!--<md-input-container class="md-block ">-->
+                <!--<label>Delivery Date</label>-->
+                <!--<adm-dtp ng-model='$ctrl.notificationToView.deliverydDate' options="{multiple : false, format: 'YYYY-MM-DD hh:mm', autoClose : true}"> -->
+                    <!--<div class="input-group date"> -->
+                        <!--<input type='text' name="deliverydDate" ng-model='$ctrl.notificationToView.deliverydDate' dtp-input class="form-control input-sm" />-->
+                    <!--</div>-->
+                    <!--<span dtp-toggle class="material-icons noselect date-icon">date_range</span>-->
+                <!--</adm-dtp>-->
+        </div>
+
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Confirmation Date</label>
+                <input name="confirmationDate"
+                       type="text" ng-model="$ctrl.notificationToView.confirmationDate"
+                       readonly disabled>
+                <!--<div ng-messages="notificationDetailsForm.confirmationDate.$error" role="alert" ng-show="notificationDetailsForm.confirmationDate.$touched">
+                    <div ng-message="required">Confirmation Date is required.</div>
+                    <div ng-message="pattern">Invalid Date.</div>
+                </div>-->
+            </md-input-container>
+
+            <!--<md-input-container class="md-block">
+                <md-datepicker name="confirmationDate" ng-model="$ctrl.notificationToView.confirmationDate" md-placeholder="Confimation Date"></md-datepicker>
+            </md-input-container>-->
+
+            <!--<md-input-container class="md-block">-->
+                <!--<label>Confirmation Date</label>-->
+                <!--<adm-dtp ng-model='$ctrl.notificationToView.confirmationDate' options="{multiple : false, format: 'YYYY-MM-DD hh:mm', autoClose : true}"> -->
+                    <!--<div class="input-group date"> -->
+                        <!--<input type='text' name="confirmationDate" ng-model='$ctrl.notificationToView.confirmationDate' dtp-input class="form-control input-sm"  />-->
+                    <!--</div>-->
+                    <!--<span dtp-toggle class="material-icons noselect date-icon">date_range</span>-->
+                <!--</adm-dtp>-->
+            <!--</md-input-container>-->
+        </div>
+
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Response Type</label>
+                <md-select name="responseType" ng-model="$ctrl.notificationToView.responseType" disabled>
+                    <md-option ng-value="{{0}}">Acknowledge</md-option>
+                    <md-option ng-value="{{1}}">Postpone</md-option>
+                    <md-option ng-value="{{2}}">Kill</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+
+        <div class="mdl-cell--6-col mdl-cell--4-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Status</label>
+                <md-select required name="status" ng-model="$ctrl.notificationToView.status" ng-init="$ctrl.notificationToView.status = 0">
+                    <md-option ng-value="{{0}}">Active</md-option>
+                    <md-option ng-value="{{1}}">Disabled</md-option>
+                    <md-option ng-value="{{2}}">Suspended</md-option>
+                </md-select>
+                <div ng-messages="notificationToView.status.$error" role="alert" ng-show="notificationToView.status.$touched">
+                    <div ng-message="required">Status is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+
+    </div>
+    <div class="buttons">
+        <button ng-click="$ctrl.cancel();" type="reset"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Cancel</button>
+        <button ng-click="$ctrl.submit();" type="submit" ng-disabled="notificationDetailsForm.$invalid" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save</button>
+    </div>
+    <!-- workaround for datepicker overlay issue -->
+    <div style="min-height:200px;"></div>
+</form>

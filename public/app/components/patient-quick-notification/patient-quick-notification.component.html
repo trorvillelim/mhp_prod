@@ -1,0 +1,25 @@
+<div layout="row" layout-align="space-between center">
+    <div class="cstm-on-mobile-padding-bottom-5" flex="70">
+        <md-input-container class="md-block"  >
+            <label>Type message here to quickly send notification to patient: </label>
+            <textarea ng-model="$ctrl.notification_to_view.subject"
+                    rows="" md-select-on-focus
+                    ng-trim="false"> </textarea>
+
+        </md-input-container>
+    </div>
+    
+    <div class="cstm-on-mobile-padding-bottom-5 buttons" layout="row" layout-align-gt-sm="end center" layout-align="center center" flex="30"  >
+        <button ng-click="$ctrl.cancel()"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                ng-disabled="$ctrl.isRunning || !$ctrl.notification_to_view.subject.trim()"
+                formnovalidate >Cancel
+        </button>
+        <button ng-click="$ctrl.submit()"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                formnovalidate ng-disabled="$ctrl.isRunning || !$ctrl.notification_to_view.subject.trim()">
+                {{$ctrl.isRunning?'Sending..':'Send'}}
+        </button>
+    </div>
+</div>
+<md-divider></md-divider><br>

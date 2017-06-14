@@ -1,0 +1,123 @@
+<form name="uploadForm" ng-show="!$ctrl.is_download">
+    <div class="mdl-card mdl-shadow--2dp">
+        <div class="frame">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet">
+                    <h4>Patient Files</h4>
+                </div>
+                <div class="mdl-cell mdl-cell--12-col" layout="row" layout-align="center center">
+                    <div class="mdl-cell mdl-cell--12-col" layout="column" layout-align="center center">
+                        <div class="mdl-cell mdl-cell--8-col drop-box"
+                             ng-disabled="$ctrl.files_to_upload.length >= $ctrl.files_to_upload_max || $ctrl.processing_upload"
+                             ngf-select="$ctrl.addFilesToUpload($files)"
+                             ngf-drop="$ctrl.addFilesToUpload($files)"
+                             ngf-keep="distinct"
+                             ngf-allow-dir="true"
+                             ngf-multiple="true"
+                             ngf-drag-over-class="{accept:'drag-over'}"
+                             ngf-max-files="$ctrl.files_to_upload_max">
+
+                            <h4 style="margin: auto"> 
+                                <span ng-show="!$ctrl.processing_upload">
+                                    {{$ctrl.files_to_upload.length < $ctrl.files_to_upload_max?'Drop file or Select file to upload': 'Max File Upload ('+$ctrl.files_to_upload_max+') Reached'}}
+                                </span>
+                                 <span ng-show="$ctrl.processing_upload">
+                                     {{$ctrl.processing_upload?'Uploading...':''}}
+                                 </span>
+                            </h4>
+                        </div>
+
+                        <!--<p class="fm"> jpeg, png, zip, doc, excel </p>-->
+
+                        <div class="mdl-cell mdl-cell--12-col" ng-if="$ctrl.files_to_upload.length >  0">
+                            <md-table-container>
+                                <table md-table>
+                                    <thead md-head md-order="$ctrl.query.order">
+                                    <tr md-row>
+                                        <th md-column md-order-by="">Progress &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                            &nbsp;</th>
+                                        <th md-column md-order-by="size">File size</th>
+                                        <th md-column md-order-by="name">File Name</th>
+                                        <th md-column md-order-by="category">Category</th>
+                                        <th md-column> {{$ctrl.processing_upload_done?'Clear':'Delete'}}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody md-body>
+                                    <tr md-row ng-repeat="file in $ctrl.files_to_upload | orderBy: $ctrl.query.order">
+                                        <td md-cell>
+                                            <md-progress-linear md-mode="indeterminate" ng-show="file.uploading"></md-progress-linear>
+                                            <div ng-show="file.uploaded" layout="row" layout-align="start center"> 
+                                                <div><i class="material-icons success">check</i></div>
+                                                <div>&nbsp;&nbsp;Success</div> 
+                                            </div>                                            
+                                            <div ng-show="file.upload_failed" layout="row" layout-align="start center"> 
+                                                <div><i class="material-icons error">error</i></div>
+                                                <div>&nbsp;&nbsp;Failed</div> 
+                                            </div>
+                                        </td>
+                                        <td md-cell> {{file.formatted_file_size }} </td>
+                                        <td md-cell> {{file.name}} </td>
+                                        <td md-cell>
+                                            <md-input-container class="md-block" ng-hide="$ctrl.processing_upload || $ctrl.processing_upload_done">
+                                                <label ng-hide="!$ctrl.category">Select Category </label>
+                                                <md-select 
+                                                    ng-model="category" 
+                                                    ng-change="file.category = category">
+                                                    <md-option ng-value="category" ng-repeat="category in $ctrl.categories">
+                                                        {{ category }}
+                                                    </md-option>
+                                                </md-select>
+                                            </md-input-container>
+                                            <div ng-show="$ctrl.processing_upload || $ctrl.processing_upload_done">
+                                                {{ file.category }}
+                                            </div>
+                                        </td>
+                                        <td md-cell>
+                                            <i ng-click="$ctrl.deleteFile(file)" class="material-icons" ng-hide="file.uploading">delete</i>
+                                        </td>                                        
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </md-table-container>
+                        </div>
+                        <div class="buttons" ng-show="$ctrl.files_to_upload.length > 0">
+                            <button ng-show="!$ctrl.processing_upload_done"
+                                    ng-click="$ctrl.clearAll()"
+                                    ng-disabled="$ctrl.processing_upload"
+                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                                    Cancel
+                            </button>
+                            <button 
+                                    ng-show="!$ctrl.processing_upload_done"
+                                    ng-click="$ctrl.upload()"
+                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                    formnovalidate ng-disabled="($ctrl.files_to_upload | filter: {category : null}).length > 0 || $ctrl.processing_upload">
+                                    {{$ctrl.processing_upload?'Uploading...':'Upload'}}
+                            </button>
+                            <button ng-show="$ctrl.processing_upload_done"
+                                    ng-click="$ctrl.clearAll()"
+                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                                    Clear
+                            </button>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!--<patient-file-download 
+        patient-user-id="$ctrl.patient_user_id" 
+        files="$ctrl.uploaded_files" 
+        files-update-in-progress="$ctrl.processing_getUploadedFilesList" 
+        files-update-promise="$ctrl.promise_getUploadedFilesList"
+        files-query="$ctrl.uploaded_files_query"></patient-file-download>-->
+    
+        <patient-file-group-list 
+            patient-file-global-functions="$ctrl.patientFileGlobalFunctions"
+            patient-user-id="$ctrl.patient_user_id" 
+            files-update-in-progress="$ctrl.processing_getUploadedFilesList" 
+            query-grouped-files="$ctrl.query_grouped_files" 
+            grouped-files="$ctrl.uploaded_files_grouped">
+        </patient-file-group-list>
+</form>

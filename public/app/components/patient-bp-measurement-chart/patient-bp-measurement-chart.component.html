@@ -1,0 +1,102 @@
+<style>
+    md-content.md-default-theme, md-content {
+        background: transparent;
+    }
+
+    .no-data {
+        display: inline;
+        margin: auto;
+    }
+    
+    #bpMeasurementChart {
+        max-height: 400px;
+    }
+
+</style>
+
+<div class="" layout-gt-md="row" layout="column" layout-align="start center" ng-if="($ctrl.logFilters != 3 && $ctrl.logFilters != 4)">
+    <div class="cstm-on-mobile-padding-bottom-5" flex="33">
+            <md-radio-group 
+                class="cstm-radio-button-tight"
+                ng-model="$ctrl.bpFilter"
+                layout="row" 
+                ng-init="$ctrl.bpFilter = $ctrl.timeFilter[2].id"
+                ng-disabled="$ctrl.isRunning"   >
+                <md-radio-button ng-repeat="item in $ctrl.timeFilter"  ng-value="{{item.id}}" aria-label="{{item.name}}">
+                    {{item.name}}
+                </md-radio-button>
+            </md-radio-group>
+    </div>
+    <div class="cstm-on-mobile-padding-vertical-5" 
+        ng-if="($ctrl.logFilters != 3 && $ctrl.logFilters != 4)" 
+        layout-gt-md="row" 
+        layout-align="center center" 
+        flex="33">       
+        <!--<md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" ng-click="$ctrl.getPreviousBP()"  >Previous</md-button>
+        <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" ng-click="$ctrl.getSelectedOnChange()" >Current</md-button>
+        <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" ng-click="$ctrl.getNextBP()" >Next</md-button>-->
+
+         <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" 
+            ng-click="$ctrl.getPreviousBP()" ng-disabled="$ctrl.isRunning"
+            ng-class="{ prevSelected : $ctrl.isPrevSelected == true}"
+            >Previous</md-button>
+        <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options"
+            ng-click="$ctrl.getSelectedOnChange()" ng-disabled="$ctrl.isRunning"   
+            ng-class="{ currentSelected : $ctrl.isCurrentSelected == true}"
+            >Current</md-button>
+        <md-button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent date-button-options" 
+            ng-click="$ctrl.getNextBP()" ng-disabled="$ctrl.isRunning || $ctrl.isCurrentSelected"
+            ng-class="{ nextSelected : $ctrl.isNextSelected == true}"                                
+            >Next</md-button>     
+
+    </div>
+    <div class="cstm-on-mobile-padding-top-5" flex="33">
+        <md-input-container class="md-block">
+            <label>Date Range</label>
+            <input class="cstm-read-only-text-min-width-200" value="{{$ctrl.startDate  | date:'yyyy-MM-dd'}} - {{$ctrl.endDate  | date:'yyyy-MM-dd'}}" disabled>
+        </md-input-container>
+    </div>
+</div>
+
+<div layout="column" layout-gt-md="row" layout-align="start center">
+    <div class="cstm-on-mobile-padding-bottom-5" flex>
+        <div ng-hide="$ctrl.processing_get_patient_bp_measurement">
+            <label class="simple-label">Target SBP/DBP: {{$ctrl.physicianTargetSBP}}/{{$ctrl.physicianTargetDBP}}</label>
+        </div>
+        <h5 class="no-data" ng-show="$ctrl.bpMeasurementData.labels <= 0 && !$ctrl.processing_get_patient_bp_measurement">**No Data Available for BP Measurements**</h5>        
+    </div>     
+    <div class="cstm-on-mobile-padding-vertical-5" flex layout-gt-md="row" layout-align="end center">
+        <div class="buttons">
+            <md-button ng-click="$ctrl.bpmListComponent.createNewBpMeasurement()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Create New</md-button>
+            <md-button 
+                ng-disabled="$ctrl.parentComponent.bp_measurements.length <= 0 || $ctrl.processing_upload_report || $ctrl.processing_download_report" 
+                ng-click="$ctrl.openPDFReport(true)" 
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    {{$ctrl.processing_download_report?'Building PDF..' : 'Export PDF'}}
+            </md-button>
+            <md-button 
+                ng-disabled="$ctrl.parentComponent.bp_measurements.length <= 0 || $ctrl.processing_upload_report || $ctrl.processing_download_report" 
+                ng-click="$ctrl.openPDFReport(false)" 
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    {{$ctrl.processing_upload_report?'Uploading..' : 'Upload Records'}}
+            </md-button>            
+        </div>
+    </div>
+</div>    
+
+<div layout-align="space-between center">
+    <md-content class="mdl-tabs__panel">
+        <canvas id='bpMeasurementChart'name="bpMeasurementChart" class="chart chart-line"
+
+                ng-if="$ctrl.bpMeasurementData.labels.length > 0"
+                chart-series="$ctrl.bpMeasurementData.series"
+                chart-data="$ctrl.bpMeasurementData.data"
+                chart-labels="$ctrl.bpMeasurementData.labels"
+                chart-colors="$ctrl.bpMeasurementData.colours"
+                chart-options="$ctrl.bpMeasurementData.options"
+                chart-dataset-override="$ctrl.bpMeasurementData.datasets" 
+            height="70" />
+    </md-content>   
+</div>
+<md-divider></md-divider>
+

@@ -1,0 +1,32 @@
+{
+  "name": "angular-idle-service",
+  "version": "1.0.0",
+  "description": "An Angular service that responds to idle users.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kurtz1993/angular-idle-service.git"
+  },
+  "keywords": [
+    "angular",
+    "angularjs",
+    "idle",
+    "ng-idle",
+    "angular-idle-service",
+    "angular-idle",
+    "user",
+    "session"
+  ],
+  "author": "Luis Rogelio Hernández López",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kurtz1993/angular-idle-service/issues"
+  },
+  "homepage": "https://github.com/Kurtz1993/angular-idle-service#readme",
+  "dependencies": {
+    "angular": "^1.5.5"
+  }
+}

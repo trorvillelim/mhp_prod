@@ -1,0 +1,281 @@
+<div class="mdl-card mdl-shadow--2dp">
+    <div class="frame">
+        <div class="mdl-grid">
+            <form name="patientProfile">
+                <div layout="row" layout-align="space-between center">
+                        <div style="padding: 10px;" flex="50">
+                            <h4>Edit Patient Profile</h4>
+                        </div>
+                    </div>
+                <md-divider></md-divider>
+
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <md-input-container class="md-block">
+                                <label>First name</label>
+                                <input required ng-model="$ctrl.formData.user.fName" name="fName">
+                                <div ng-messages="patientProfile.fName.$error" role="alert">
+                                    <div ng-message="required">First name is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <md-input-container class="md-block">
+                                <label>Last name</label>
+                                <input required ng-model="$ctrl.formData.user.lName" name="lName">
+                                <div ng-messages="patientProfile.lName.$error" role="alert">
+                                    <div ng-message="required">Last name is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <md-input-container class="md-block">
+                                <label>Middle name</label>
+                                <input ng-model="$ctrl.formData.user.mName" name="mName">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <!-- ng-if workaround for initial value of Birthday-->
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <md-input-container class="md-block">
+                            <label>Birthday</label>
+                            <input ng-if="$ctrl.loaded" date-range-picker name="dob" ng-pattern="$ctrl.dobRegex"
+                                   type="text" ng-model="$ctrl.formData.dob"
+                                   class="date-picker" options="{singleDatePicker:true, locale:{format:'YYYY-MM-DD'}}"
+                                   required="" max="$ctrl.maxDate" min="$ctrl.minDate">
+                            <div ng-messages="patientProfile.dob.$error" role="alert"
+                                 ng-show="patientProfile.dob.$touched">
+                                <div ng-message="required">Birthday is required.</div>
+                                <div ng-message="pattern">Invalid Birthday.</div>
+                            </div>
+
+                            <!--<adm-dtp ng-model='$ctrl.formData.dob' options="{dtpType : 'date', format: 'YYYY-MM-DD', multiple:false}" maxdate="'{{maxDate}}'">-->
+                            <!--
+                   <md-datepicker required name="dob" ng-model="$ctrl.formData.dob" md-placeholder="Birthday"></md-datepicker>
+                   <div ng-messages="patientProfile.dob.$error" role="alert">
+                       <div ng-message="required">Birthday is required.</div>
+                   </div>
+                   -->
+                            <!--</adm-dtp>-->
+                        </md-input-container>
+                    </div>
+
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select__fix-height">
+                            <md-input-container class="md-block">
+                                <label>Gender</label>
+                                <md-select required name="gender" ng-model="$ctrl.formData.gender">
+                                    <md-option ng-value="{{0}}">Male</md-option>
+                                    <md-option ng-value="{{1}}">Female</md-option>
+                                </md-select>
+                                <div ng-messages="patientProfile.gender.$error" role="alert">
+                                    <div ng-message="required">Gender is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select__fix-height">
+                            <md-input-container class="md-block">
+                                <label>Race</label>
+                                <md-select required name="race" ng-model="$ctrl.formData.race">
+                                    <md-option ng-value="{{0}}">Black</md-option>
+                                    <md-option ng-value="{{1}}">Hispanic</md-option>
+                                    <md-option ng-value="{{2}}">WhiteNotHispanic</md-option>
+                                </md-select>
+                                <div ng-messages="patientProfile.race.$error" role="alert">
+                                    <div ng-message="required">Race is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <md-input-container class="md-block">
+                                <label>Address 1</label>
+                                <input ng-model="$ctrl.formData.user.address1" name="address1">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <md-input-container class="md-block">
+                                <label>Address 2</label>
+                                <input ng-model="$ctrl.formData.user.address2" name="address2">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <md-input-container class="md-block">
+                                <label>Email</label>
+                                <input name="email" ng-pattern="$ctrl.emailRegex" ng-model="$ctrl.formData.user.email"
+                                       readonly disabled>
+                                <!--
+                                <div ng-messages="patientProfile.user.$error" role="alert">
+                                    <div ng-message="required">Email is required.</div>
+                                    <div ng-message="pattern">Invalid email format.</div>
+                                </div>
+                                -->
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <md-input-container class="md-block">
+                                <label>City</label>
+                                <input ng-model="$ctrl.formData.user.city" name="city">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <md-input-container class="md-block">
+                                <label>State</label>
+                                <input ng-model="$ctrl.formData.user.state" name="state" maxlength="2">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <md-input-container class="md-block">
+                                <label>Postal Code</label>
+                                <input ng-model="$ctrl.formData.user.postalCode" name="postalCode">
+                            </md-input-container>
+                        </div>
+
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <!--
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select__fix-height">
+                            <md-input-container class="md-block">
+                                <label>Language</label>
+                                <md-select required name="language" ng-model="$ctrl.formData.language">
+                                    <md-option ng-value="{{0}}"></md-option>
+                                    <md-option ng-value="{{1}}">Us</md-option>
+                                    <md-option ng-value="{{2}}">Philippines</md-option>
+                                </md-select>
+                                <div ng-messages="patientProfile.language.$error" role="alert">
+                                    <div ng-message="required">Language is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                          -->
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <md-input-container class="md-block">
+                                <label>Phone</label>
+                                <input required ng-model="$ctrl.formData.user.phone1" name="phone1">
+                                <div ng-messages="patientProfile.phone1.$error" role="alert">
+                                    <div ng-message="required">Phone is required.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+                        <!--
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <md-input-container class="md-block">
+                                <label>Short bio</label>
+                                <textarea ng-model="$ctrl.formData.shortBio" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+                            </md-input-container>
+                        </div>
+                        -->
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <md-input-container class="md-block">
+                                <label>Alternative Phone</label>
+                                <input ng-model="$ctrl.formData.user.phone2" name="phone2">
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <md-input-container class="md-block">
+                            <label>Target Systolic BP</label>
+                            <input type="number" ng-model="$ctrl.formData.physicianTargetSBP" name="physicianTargetSBP" min="50" max="300" autocomplete="off">
+                            <div ng-messages="patientProfile.physicianTargetSBP.$error" role="alert" ng-show="patientProfile.physicianTargetSBP.$touched">
+                                <div ng-message="min">Target Systolic is out of range (50, 300)</div>
+                                <div ng-message="max">Target Systolic is out of range (50, 300)</div>
+                                <div ng-message="number">The field Systolic BP must be a number.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+
+                    <div class="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
+                        <md-input-container class="md-block">
+                            <label>Target Diastolic BP</label>
+                            <input type="number" ng-model="$ctrl.formData.physicianTargetDBP" name="physicianTargetDBP" min="50" max="300" autocomplete="off">
+                            <div ng-messages="patientProfile.physicianTargetDBP.$error" role="alert" ng-show="patientProfile.physicianTargetDBP.$touched">
+                                <div ng-message="min">Target Systolic is out of range (50, 300)</div>
+                                <div ng-message="max">Target Systolic is out of range (50, 300)</div>
+                                <div ng-message="number">The field Systolic BP must be a number.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <!--PATIENT CONDITION-->
+                    <legend>Patient Conditions</legend>
+                    <div class="mdl-cell mdl-cell--10-col">
+                        <div layout="row" layout-align="space-between center">
+                            <div layout="column" layout-align="end start">
+                                <div ng-repeat="item in $ctrl.patientConditionOptions | limitTo : 10">
+                                    <md-checkbox ng-checked="$ctrl.selectedConditions.indexOf(item) > -1" ng-click="$ctrl.onSelect(item)">
+                                        {{ item.conditionName }}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                            <div layout="column" layout-align="start start">
+                                <div ng-repeat="item in $ctrl.patientConditionOptions | limitTo : 10 : 10">
+                                    <md-checkbox ng-checked="$ctrl.selectedConditions.indexOf(item) > -1"
+                                                 ng-click="$ctrl.onSelect(item, selected)">
+                                        {{ item.conditionName }}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--TEXT AREAS FOR PATIENT ALLERGIES AND OTHER PATIENT CONDITION-->
+                    <div class="mdl-cell--12-col" layout="row" layout-align="space-between center">
+                        <div class="mdl-cell--6-col mdl-cell--12-col-tablet">
+                            <md-input-container class="md-block">
+                                <label>Other Patient Conditions</label>
+                                <textarea ng-model="$ctrl.formData.otherConditions"
+                                          rows="1" md-select-on-focus
+                                          ng-change="$ctrl.setConditionFieldLimit($ctrl.formData.otherConditions)"
+                                          ng-trim="false"> </textarea>
+                                <p> Characters remaining : {{ 150 - $ctrl.formData.otherConditions.length }} </p>
+                            </md-input-container>
+                        </div>
+
+                        <div class="mdl-cell--6-col mdl-cell--12-col-tablet">
+                            <md-input-container class="md-block">
+                                <label>Allergies</label>
+                                <textarea ng-model="$ctrl.formData.current_allergies"
+                                          rows="1" md-select-on-focus
+                                          ng-change="$ctrl.setAllergiesFieldLimit($ctrl.formData.current_allergies)"
+                                          ng-trim="false"> </textarea>
+                                <p> Characters remaining : {{ 150 - $ctrl.formData.current_allergies.length }} </p>
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                <div class="buttons">
+                    <button ng-click="$ctrl.onCancel()"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        Cancel
+                    </button>
+                    <button ng-click="$ctrl.onSave()"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                            formnovalidate ng-disabled="patientProfile.$invalid">Save
+                    </button>
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

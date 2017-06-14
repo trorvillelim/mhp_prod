@@ -1,0 +1,25 @@
+<div class="mdl-cell mdl-cell--12-col" layout="row" layout-align="start center">
+    <div class="login-info">
+        Hello
+        <strong class="name">
+            Dr. <span ng-show="$ctrl.userInfo">{{$ctrl.userInfo.fName}}</span>!
+            <md-menu>
+                    <button class="mdl-button material-menu-button mdl-js-button mdl-button--icon menu" ng-click="$ctrl.openMenu($mdOpenMenu, $event)">
+                        <i class="material-icons">arrow_drop_down</i>
+                    </button>
+                    <md-menu-content width="3">
+                        <md-menu-item>
+                            <md-button ng-click="$ctrl.logout()">
+                                Logout
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="$ctrl.changePassword()">
+                                Change Password
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+        </strong>
+    </div>
+</div>

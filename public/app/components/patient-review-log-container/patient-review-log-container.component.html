@@ -1,0 +1,43 @@
+<div class="mdl-card mdl-shadow--2dp">
+    <div class="frame">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                                <div layout="row" layout-align="space-between center">
+                                <div class="cstm-on-mobile-padding-bottom-5" flex="50">
+                                    <h4>Patient Review Log Details</h4>
+                                </div>
+                                </div>
+                <md-tabs md-dynamic-height md-border-bottom>
+                    <md-tab label="Manually Logged" ng-click="$ctrl.update_manual_logged_list_id()">
+                        <md-content class="mdl-tabs__panel">
+                            <patient-review-log-list
+                                    log-list-id="$ctrl.manual_logged_list_id"
+                                    is-manual="true"
+                                    log-filters="$ctrl.initLogFilters"
+                                    total-time-spent="$ctrl.totalTimeSpent"
+                                    enable-date-range="$ctrl.enableDateRange"
+                                    physician-info="$ctrl.physician_info"
+                                    patient-info="$ctrl.patient_info" >
+
+                            </patient-review-log-list>
+                        </md-content>
+                    </md-tab>
+                    <md-tab label="Automatically Logged" ng-click="$ctrl.update_automatic_logged_list_id()">
+                        <md-content class="mdl-tabs__panel">
+                            <patient-review-log-list 
+                                log-list-id="$ctrl.automatic_logged_list_id"
+                                is-manual="false" 
+                                log-filters="$ctrl.initLogFilters" 
+                                total-time-spent="$ctrl.totalTimeSpent" 
+                                enable-date-range="$ctrl.enableDateRange"
+                                physician-info="$ctrl.physician_info"
+                                patient-info="$ctrl.patient_info" >                                
+
+                            </patient-review-log-list>
+                        </md-content>
+                    </md-tab>
+                </md-tabs>
+            </div>
+        </div>
+    </div>
+</div>

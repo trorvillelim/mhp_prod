@@ -1,0 +1,122 @@
+<form name="bpMeasurementDetails">
+    <div class="mdl-grid">
+        <div class="mdl-cell--6-col mdl-cell--12-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Measure Date</label>
+                <!--<adm-dtp ng-model='$ctrl.bpMeasurementToView.measureDate' options="{format: 'YYYY-MM-DD hh:mm'}"> -->
+                    <!--<div class="input-group date"> -->
+                        <!--&lt;!&ndash;<input required name="measureDate" type='tnumberRegexext' ng-model='$ctrl.bpMeasurementToView.measureDate' dtp-input class="form-control input-sm" ng-readonly="true"/>&ndash;&gt;-->
+                        <!--<input required name="measureDate" type='text' ng-model='$ctrl.bpMeasurementToView.measureDate' dtp-input class="form-control input-sm" />-->
+                    <!--</div>-->
+                    <!--<span dtp-toggle class="material-icons noselect date-icon">date_range</span>-->
+                <!--</adm-dtp>-->
+                    <input date-range-picker name="measureDate" ng-pattern="$ctrl.regex"
+                           type="text" ng-model="$ctrl.bpMeasurementToView.measureDate"
+                           options="{singleDatePicker:true, timePicker:true,  locale:{format:'YYYY-MM-DD hh:mm a'}}" max="$ctrl.currentDate" required="">
+                    <div ng-messages="bpMeasurementDetails.measureDate.$error" role="alert" ng-show="bpMeasurementDetails.measureDate.$touched">
+                        <div ng-message="required">Measure Date is required.</div>
+                        <div ng-message="pattern">Invalid Date.</div>
+                    </div>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--12-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Location</label>
+                <md-select required name="location" ng-model="$ctrl.bpMeasurementToView.location"  ng-readonly="true">
+                    <md-option ng-value="{{0}}">Location</md-option>
+                    <md-option ng-value="{{1}}">DrOffice</md-option>
+                </md-select>
+                <div ng-messages="bpMeasurementDetails.location.$error" role="alert" ng-show="bpMeasurementDetails.location.$touched">
+                    <div ng-message="required">Location is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--12-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Systolic BP</label>
+                <input required type="number" ng-model="$ctrl.bpMeasurementToView.systolic" name="systolic" min="50" max="300" autocomplete="off"> 
+                <div ng-messages="bpMeasurementDetails.systolic.$error" role="alert" ng-show="bpMeasurementDetails.systolic.$touched">
+                    <div ng-message="min">Systolic is out of range (50, 300)</div>
+                    <div ng-message="max">Systolic is out of range (50, 300)</div>
+                    <div ng-message="number">The field Systolic BP must be a number.</div>
+                        <!-- workaround for IE animation issue-->
+                        <div ng-messages="bpMeasurementDetails.systolic.$error" role="alert" ng-show="bpMeasurementDetails.systolic.$touched">
+                             <div ng-message="required">Systolic BP is required.</div>
+                        </div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--12-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Diastolic BP</label>
+                <input required type="number" ng-model="$ctrl.bpMeasurementToView.diastolic" name="diastolic" min="40" max="200" autocomplete="off">  
+                <div ng-messages="bpMeasurementDetails.diastolic.$error" role="alert" ng-show="bpMeasurementDetails.diastolic.$touched">
+                    <div ng-message="min">Diastolic is out of range (40, 200)</div>
+                    <div ng-message="max">Diastolic is out of range (40, 200)</div>
+                    <div ng-message="number">The field Diastolic BP must be a number.</div>
+                      <div ng-messages="bpMeasurementDetails.diastolic.$error" role="alert" ng-show="bpMeasurementDetails.diastolic.$touched">
+                             <div ng-message="required">Diastolic BP is required.</div>
+                     </div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--12-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Heart Rate</label>
+                <input required type="number" ng-model="$ctrl.bpMeasurementToView.heartRate" name="heartRate" min="30" max="200" autocomplete="off">  
+                <div ng-messages="bpMeasurementDetails.heartRate.$error" role="alert" ng-show="bpMeasurementDetails.heartRate.$touched">
+                    <div ng-message="min">Heart Rate is out of range (30, 200)</div>
+                    <div ng-message="max">Heart Rate is out of range (30, 200)</div>
+                    <div ng-message="number">The field Heart Rate must be a number.</div>
+                        <div ng-messages="bpMeasurementDetails.heartRate.$error" role="alert" ng-show="bpMeasurementDetails.heartRate.$touched">
+                             <div ng-message="required">Heart Rate is required.</div>
+                       </div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--12-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Device</label>
+                <input required type="text" ng-model="$ctrl.bpMeasurementToView.device" name="device" autocomplete="off">  
+                <div ng-messages="bpMeasurementDetails.device.$error" role="alert"  ng-show="bpMeasurementDetails.device.$touched">
+                    <div ng-message="required">Device is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--12-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Note</label>
+                <textarea ng-model="$ctrl.bpMeasurementToView.note"
+                          rows="3" md-select-on-focus
+                          ng-change="$ctrl.watchNoteTextArea($ctrl.bpMeasurementToView.note)"
+                          ng-trim="false"> </textarea>
+                <p> Characters remaining : {{ 150 - $ctrl.bpMeasurementToView.note.length }} </p>
+            </md-input-container>
+        </div>
+        <div class="mdl-cell--6-col mdl-cell--12-col-tablet fm">
+            <md-input-container class="md-block">
+                <label>Measurement status</label>
+                <md-select name="select" ng-model="$ctrl.bpMeasurementToView.measurementStatusId">
+                    <md-option ng-value="{{1}}">Resting</md-option>
+                    <md-option ng-value="{{2}}">After exercise</md-option>
+                    <md-option ng-value="{{3}}">Before exercise</md-option>
+                    <md-option ng-value="{{4}}">Tired</md-option>
+                    <md-option ng-value="{{5}}">Unwell</md-option>
+                    <md-option ng-value="{{6}}">Excited</md-option>
+                    <md-option ng-value="{{7}}">Surprised</md-option>
+                    <md-option ng-value="{{8}}">Sad</md-option>
+                    <md-option ng-value="{{9}}">Angry</md-option>
+                    <md-option ng-value="{{10}}">In love</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button type="reset" ng-click="$ctrl.cancel()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Cancel</button>
+        <button type="submit" 
+                ng-click="$ctrl.save()" 
+                ng-disabled="bpMeasurementDetails.$invalid" 
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save</button>
+    </div>
+</form>

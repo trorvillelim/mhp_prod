@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1",
+    "firstname": "john",
+    "lastname": "doe",
+    "email": "johndoe@yopmail.com"
+  },
+  {
+    "id": "2",
+    "firstname": "jane",
+    "lastname": "doe",
+    "email": "janedoe@yopmail.com"
+  },
+  {
+    "id": "3",
+    "firstname": "jackie",
+    "lastname": "doe",
+    "email": "jackie@yopmail.com"
+  },
+  {
+    "id": "5",
+    "firstname": "jack"
+  }
+]

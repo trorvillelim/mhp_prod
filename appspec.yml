@@ -1,0 +1,19 @@
+version: 0.0
+os: linux
+files:
+ - source: /
+   destination: /opt/mhp
+permissions:
+hooks:
+    ApplicationStop:
+    - location: scripts/stop_application.sh
+      timeout: 300
+      runas: root
+    AfterInstall:
+    - location: scripts/update_configuration.sh
+      timeout: 300
+      runas: root
+    ApplicationStart:
+    - location: scripts/start_application.sh
+      timeout: 300
+      runas: root
